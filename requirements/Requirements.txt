@@ -1,0 +1,20 @@
+@Projects
+  @Routes
+    *get all project
+    *get single project
+    *add project
+    *update project
+    *delete project
+      -cascade deleting (when a project is deleted the tickets are automaticaly deleted)
+  @Advanced query
+    # -filter: sort, select
+    # -pagination
+
+@Tickets (every ticket is associated with a project)
+  *get all tickets
+  *get all tickets of specific project
+  *get single ticket
+  *add ticket
+    -add ticket to specific Project
+  *update ticket
+  *delete ticket
