@@ -1,8 +1,9 @@
 const express = require('express');
 const colors = require('colors')
 const dotenv = require('dotenv');
-const connectDB = require('./config/db')
-const errorHandler = require('./middleware/error')
+const connectDB = require('./config/db');
+const errorHandler = require('./middleware/error');
+const cookieParser = require('cookie-parser')
 
 dotenv.config({ path: './config/config.env' })
 
@@ -14,13 +15,18 @@ connectDB();
 // Body parser
 app.use(express.json());
 
+// CookieParser
+app.use(cookieParser());
+
 // Route files
 const projects = require('./routes/projects');
 const tickets = require('./routes/tickets');
+const auth = require('./routes/auth');
 
 // Mount routers
 app.use('/api/v1/projects', projects)
 app.use('/api/v1/tickets', tickets)
+app.use('/api/v1/auth', auth)
 
 // Error handler
 app.use(errorHandler)

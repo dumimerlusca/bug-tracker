@@ -1,20 +1,34 @@
 @Projects
   @Routes
-    *get all project
-    *get single project
-    *add project
-    *update project
-    *delete project
-      -cascade deleting (when a project is deleted the tickets are automaticaly deleted)
+    # *get all project
+    # *get single project
+    # *add project
+    # *update project
+    # *delete project
+      # -cascade deleting (when a project is deleted the tickets are automaticaly deleted)
   @Advanced query
     # -filter: sort, select
     # -pagination
 
 @Tickets (every ticket is associated with a project)
-  *get all tickets
-  *get all tickets of specific project
-  *get single ticket
-  *add ticket
-    -add ticket to specific Project
-  *update ticket
-  *delete ticket
+  # *get all tickets
+  # *get all tickets of specific project
+  # *get single ticket
+  # *add ticket
+    # -add ticket to specific Project
+  # *update ticket
+  # *delete ticket
+
+@User
+
+@Authentification
+# - register User
+  # - encrypt password in database
+# - login user
+
+@Refresh token
+-generate acces token 15m (login), and send it in a cookie
+-generate refresh token (login), and store it in database (try to encrypt it)
+-store refresh token in database
+-when if the acces token is not valid when acces a route, check to see if exists a refresh token in database, if it does, generate new token
+-send the new token in a cokie

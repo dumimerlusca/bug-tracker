@@ -6,7 +6,7 @@ const {
   updateProject,
   deleteProject,
 } = require('../controllers/projects');
-const Project = require('../models/Project');
+const { protect, authorize } = require('../middleware/auth')
 
 const router = express.Router();
 
@@ -16,12 +16,12 @@ router.use('/:id/tickets', ticketsRouter)
 
 router.route('/')
   .get(getProjects)
-  .post(addProject)
+  .post(protect, authorize(['developer', 'admin']), addProject)
 
 router.route('/:id')
   .get(getProject)
-  .put(updateProject)
-  .delete(deleteProject)
+  .put(protect, authorize(['developer', 'admin']), updateProject)
+  .delete(protect, authorize(['developer', 'admin']), deleteProject)
 
 
 module.exports = router;

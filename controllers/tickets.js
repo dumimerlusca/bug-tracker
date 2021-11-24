@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Ticket = require('../models/Ticket');
+const Project = require('../models/Project');
 const ErrorResponse = require('../utils/errorResponse');
 
 // @desc   Get all tickets
@@ -52,6 +53,13 @@ exports.getTicket = async (req, res, next) => {
 // @acces  Private
 exports.addTicket = async (req, res, next) => {
   try {
+    req.body.project = req.params.id;
+
+    const project = await Project.findById(req.body.project);
+    if (!project) {
+      return next(new ErrorResponse(`No project with the id ${req.params.id}`, 404))
+    }
+
     const ticket = await Ticket.create(req.body);
 
     res.status(201).json({ succes: true, data: ticket })
