@@ -28,10 +28,5 @@ const UserSchema = new mongoose.Schema({
   }
 })
 
-// Generate a jwt token
-UserSchema.methods.generateJwtTokenOnLogin = async function () {
-  const token = jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE })
-  return token;
-}
 
 module.exports = mongoose.model('User', UserSchema);

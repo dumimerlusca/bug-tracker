@@ -17,7 +17,7 @@ exports.protect = async (req, res, next) => {
     req.user = { id, role }
   } catch (error) {
 
-    return next(new ErrorResponse('Not authorized to access this route', 403))
+    return next(new ErrorResponse('Not authorized to access this route, token not valid', 403))
   }
 
   next();

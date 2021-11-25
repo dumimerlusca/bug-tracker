@@ -47,32 +47,83 @@ exports.login = async (req, res, next) => {
       return next(new ErrorResponse('Invalid credentials', 400))
     }
 
-    // Generate token
-    const token = await user.generateJwtTokenOnLogin();
-    const refreshToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_REFRESH_SECRET);
+    const userPayload = {
+      id: user.id,
+      role: user.role,
+      email: user.email
+    }
+
+    // Generate access token
+    const token = generateAccessToken(userPayload);
+
+
+    // Generate refresh token
+    const refreshToken = jwt.sign(userPayload, process.env.JWT_REFRESH_SECRET);
 
     // Store refresh token in database
     await Token.create({ token: refreshToken });
 
-
     res.status(201)
-      .cookie('refreshToken', refreshToken, { httpOnly: true })
-      .json({ succes: true, token })
+      .json({ succes: true, accessToken: token, refreshToken: refreshToken })
   } catch (error) {
     next(error)
   }
 }
 
+// @desc   Refresh token
+// @route  POST /api/v1/auth/refresh
+// @acces  Private
+exports.refresh = async (req, res, next) => {
+  if (!req.body.token) {
+    return next(new ErrorResponse('Please send a token', 400))
+  }
+
+  // Check to see if refresh token exists in database
+  const token = await Token.findOne({ token: req.body.token });
+  if (!token) {
+    return next(new ErrorResponse('Not authorized to access this route, token not valid', 403))
+  }
+  try {
+    const decoded = jwt.verify(req.body.token, process.env.JWT_REFRESH_SECRET)
+    const { id, role, email } = decoded
+    console.log(decoded);
+    const newToken = generateAccessToken({ id, role, email })
+
+    res.status(200).json({ success: true, accessToken: newToken })
+
+  } catch (error) {
+    return next(new ErrorResponse('Not authorized to access this route', 403))
+  }
+}
+
+
 // @desc   Logout user
 // @route  POST /api/v1/auth/logout
 // @acces  Private
 exports.logout = async (req, res, next) => {
-  const refreshToken = req.headers.cookie.split('=')[1];
-  console.log(refreshToken);
+  let refreshToken;
+
+  if (req.body.refreshToken) {
+    refreshToken = req.body.refreshToken;
+  } else {
+    refreshToken = req.headers.cookie.split('=')[1];
+  }
+  // Check if refresh token exist
+  if (!refreshToken) {
+    res.status(200).json({ succes: true, msg: "Logout, no token" });
+  }
+
+  // Find and remove the token from the active tokens database
   try {
     await Token.findOneAndRemove({ token: refreshToken })
     res.status(200).json({ succes: true, msg: "Logout" })
   } catch (error) {
     res.status(200).json({ succes: true, msg: "Logout, no token" })
   }
+}
+
+// Generate Access token
+function generateAccessToken(payload) {
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15s' })
+  return token;
 }
