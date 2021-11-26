@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Project = require('../models/Project');
 const ErrorResponse = require('../utils/errorResponse');
+const jwt = require('jsonwebtoken');
 
 // @desc   Get all projects
 // @route  GET /api/v1/projects
@@ -79,7 +80,7 @@ exports.getProject = async (req, res, next) => {
 // @acces  Private
 exports.addProject = async (req, res, next) => {
   try {
-    const project = await Project.create(req.body)
+    const project = await Project.create({ ...req.body, createdBy: req.user.id })
 
     res.status(200).json({ succes: true, data: project })
   } catch (error) {

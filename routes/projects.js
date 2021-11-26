@@ -16,12 +16,12 @@ router.use('/:id/tickets', ticketsRouter)
 
 router.route('/')
   .get(getProjects)
-  .post(protect, authorize(['developer', 'admin']), addProject)
+  .post(protect, authorize(['admin']), addProject)
 
 router.route('/:id')
   .get(getProject)
-  .put(protect, authorize(['developer', 'admin']), updateProject)
-  .delete(protect, authorize(['developer', 'admin']), deleteProject)
+  .put(protect, authorize(['project manager', 'admin']), updateProject)
+  .delete(protect, authorize(['admin']), deleteProject)
 
 
 module.exports = router;

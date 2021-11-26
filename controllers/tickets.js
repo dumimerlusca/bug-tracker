@@ -54,6 +54,7 @@ exports.getTicket = async (req, res, next) => {
 exports.addTicket = async (req, res, next) => {
   try {
     req.body.project = req.params.id;
+    req.body.createdBy = req.user.id;
 
     const project = await Project.findById(req.body.project);
     if (!project) {

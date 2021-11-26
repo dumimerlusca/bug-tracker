@@ -61,7 +61,7 @@ exports.login = async (req, res, next) => {
     const refreshToken = jwt.sign(userPayload, process.env.JWT_REFRESH_SECRET);
 
     // Store refresh token in database
-    await Token.create({ token: refreshToken });
+    // await Token.create({ token: refreshToken });
 
     res.status(201)
       .json({ succes: true, accessToken: token, refreshToken: refreshToken })
@@ -124,6 +124,6 @@ exports.logout = async (req, res, next) => {
 
 // Generate Access token
 function generateAccessToken(payload) {
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15s' })
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE })
   return token;
 }

@@ -14,6 +14,14 @@ const TicketSchema = new mongoose.Schema({
     ref: 'Project',
     required: true
   },
+  createdBy: {
+    type: mongoose.Schema.ObjectId,
+    required: true,
+    ref: 'User'
+  },
+  developers: {
+    type: Array,
+  },
   createdAt: {
     type: Date,
     default: Date.now()

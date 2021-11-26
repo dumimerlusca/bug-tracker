@@ -11,7 +11,7 @@ exports.protect = async (req, res, next) => {
 
   // Validate token
   try {
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const { id, role } = decoded;
 
     req.user = { id, role }

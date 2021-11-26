@@ -20,6 +20,7 @@
   # *delete ticket
 
 @User
+-Roles : admin, project manager, developer, user
 
 @Authentification
 # - register User
@@ -27,8 +28,39 @@
 # - login user
 
 @Refresh token
--generate acces token 15m (login), and send it in a cookie
--generate refresh token (login), and store it in database (try to encrypt it)
+# -generate acces token 15m (login), and send it in a cookie
+# -generate refresh token (login), and store it in database
 -store refresh token in database
--when if the acces token is not valid when acces a route, check to see if exists a refresh token in database, if it does, generate new token
+-if the acces token is not valid when acces a route, check to see if exists a refresh token in database, if it does, generate new token
 -send the new token in a cokie
+
+
+-Create project ownership
+-create ticket ownership
+
+
+Roles 
+  *admin: 
+    - assign roles to users
+    - do everything else
+  *project manager
+    - update projects  
+    - change project status
+    - add tickets
+    - asign developers to the project
+  *developer  
+    - add comments
+    - change project status 
+  *submitter
+    - add tickets
+    - add comments
+
+Relations
+  # *Each project is asigned to a user, admin or project manager
+  # *Each project has its own tickets
+  # *Each project has couple of developers working on it
+  # *Each ticket is asigned to a project
+  # *Each ticket is asigned to one or more developers
+  
+    
+

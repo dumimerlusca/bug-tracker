@@ -12,11 +12,11 @@ const router = express.Router({ mergeParams: true });
 
 router.route('/')
   .get(protect, authorize(['developer', 'admin']), getTickets)
-  .post(protect, authorize(['developer', 'admin']), addTicket)
+  .post(protect, authorize(['admin', 'submitter', 'project manager']), addTicket)
 
 router.route('/:id')
   .get(getTicket)
-  .put(protect, authorize(['developer', 'admin']), updateTicket)
-  .delete(protect, authorize(['developer', 'admin']), deleteTicket)
+  .put(protect, authorize(['developer', 'admin', 'project manager']), updateTicket)
+  .delete(protect, authorize(['project manager', 'admin']), deleteTicket)
 
 module.exports = router;

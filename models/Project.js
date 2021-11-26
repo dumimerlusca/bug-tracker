@@ -14,6 +14,18 @@ const ProjectSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now()
+  },
+  createdBy: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  project_manager: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User'
+  },
+  developers: {
+    type: Array
   }
 }, {
   toJSON: { virtuals: true },
