@@ -59,7 +59,7 @@ Relations
   # *Each project is asigned to a user, admin or project manager
   # *Each project has its own tickets
   # *Each project has couple of developers working on it
-  # *Each ticket is asigned to a project
+  # *Each ticket is asigned to a project  
   # *Each ticket is asigned to one or more developers
   
     
