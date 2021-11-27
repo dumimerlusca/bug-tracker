@@ -12,8 +12,7 @@ const AlertProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const setAlert = (type, msg) => {
-    console.log('SetAlert', type, msg);
+  const setAlert = (msg, type) => {
     dispatch({ type: 'SET_ALERT', payload: { type, msg } })
     removeAlert();
   }

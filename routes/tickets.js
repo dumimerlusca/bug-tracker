@@ -11,7 +11,7 @@ const { protect, authorize, } = require('../middleware/auth')
 const router = express.Router({ mergeParams: true });
 
 router.route('/')
-  .get(protect, authorize(['developer', 'admin']), getTickets)
+  .get(protect, getTickets)
   .post(protect, authorize(['admin', 'submitter', 'project manager']), addTicket)
 
 router.route('/:id')

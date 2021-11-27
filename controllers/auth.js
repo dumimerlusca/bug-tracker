@@ -16,7 +16,22 @@ exports.register = async (req, res, next) => {
 
     const user = await User.create(req.body)
 
-    res.status(201).json({ succes: true })
+    const userPayload = {
+      id: user.id
+    }
+
+    // Generate access token
+    const accessToken = generateAccessToken(userPayload);
+
+    // Generate refresh token
+    const refreshToken = jwt.sign(userPayload, process.env.JWT_REFRESH_SECRET);
+
+    // Store refresh token in database
+    await Token.create({ refreshToken, user: user.id });
+
+    res.status(201)
+      .cookie('refreshToken', refreshToken)
+      .json({ success: true, accessToken })
   } catch (error) {
     next(error)
   }
@@ -48,23 +63,22 @@ exports.login = async (req, res, next) => {
     }
 
     const userPayload = {
-      id: user.id,
-      role: user.role,
-      email: user.email
+      id: user.id
     }
 
     // Generate access token
-    const token = generateAccessToken(userPayload);
+    const accessToken = generateAccessToken(userPayload);
 
 
-    // Generate refresh token
+    // Generate new refresh token
     const refreshToken = jwt.sign(userPayload, process.env.JWT_REFRESH_SECRET);
 
-    // Store refresh token in database
-    // await Token.create({ token: refreshToken });
+    // Update the refresh token in database
+    await Token.findOneAndUpdate({ user: user.id }, { refreshToken })
 
     res.status(201)
-      .json({ succes: true, accessToken: token, refreshToken: refreshToken })
+      .cookie('refreshToken', refreshToken)
+      .json({ success: true, accessToken, refreshToken })
   } catch (error) {
     next(error)
   }
@@ -74,20 +88,21 @@ exports.login = async (req, res, next) => {
 // @route  POST /api/v1/auth/refresh
 // @acces  Private
 exports.refresh = async (req, res, next) => {
-  if (!req.body.token) {
+  if (!req.cookies.refreshToken) {
     return next(new ErrorResponse('Please send a token', 400))
   }
 
   // Check to see if refresh token exists in database
-  const token = await Token.findOne({ token: req.body.token });
+  const token = await Token.findOne({ refreshToken: req.cookies.refreshToken });
   if (!token) {
     return next(new ErrorResponse('Not authorized to access this route, token not valid', 403))
   }
   try {
-    const decoded = jwt.verify(req.body.token, process.env.JWT_REFRESH_SECRET)
-    const { id, role, email } = decoded
-    console.log(decoded);
-    const newToken = generateAccessToken({ id, role, email })
+    const decoded = jwt.verify(req.cookies.refreshToken, process.env.JWT_REFRESH_SECRET)
+    const userPayload = {
+      id: decoded.id
+    }
+    const newToken = generateAccessToken(userPayload)
 
     res.status(200).json({ success: true, accessToken: newToken })
 
@@ -110,20 +125,39 @@ exports.logout = async (req, res, next) => {
   }
   // Check if refresh token exist
   if (!refreshToken) {
-    res.status(200).json({ succes: true, msg: "Logout, no token" });
+    res.status(200).json({ success: true, msg: "Logout, no token" });
   }
 
   // Find and remove the token from the active tokens database
   try {
     await Token.findOneAndRemove({ token: refreshToken })
-    res.status(200).json({ succes: true, msg: "Logout" })
+    res.status(200).json({ success: true, msg: "Logout" })
   } catch (error) {
-    res.status(200).json({ succes: true, msg: "Logout, no token" })
+    res.status(200).json({ success: true, msg: "Logout, no token" })
   }
 }
 
+// @desc   Get current logged in user
+// @route  POST /api/v1/auth/me
+// @acces  Private
+exports.getCurrentUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return next(new ErrorResponse('Access denied', 401))
+    }
+
+    res.status(200).json({ success: true, data: user })
+  } catch (error) {
+    next()
+  }
+}
+
+
 // Generate Access token
-function generateAccessToken(payload) {
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE })
+const generateAccessToken = (payload) => {
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15s' })
   return token;
 }
+
+exports = { generateAccessToken }

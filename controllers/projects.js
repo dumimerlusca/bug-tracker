@@ -46,7 +46,7 @@ exports.getProjects = async (req, res, next) => {
 
     const projects = await query;
     res.status(200).json({
-      succes: true,
+      success: true,
       count: projects.length,
       total: total,
       page,
@@ -69,7 +69,7 @@ exports.getProject = async (req, res, next) => {
       return next(new ErrorResponse(`Project with id ${req.params.id} not found`, 404))
     }
 
-    res.status(200).json({ succes: true, data: project })
+    res.status(200).json({ success: true, data: project })
   } catch (error) {
     next(error)
   }
@@ -82,7 +82,7 @@ exports.addProject = async (req, res, next) => {
   try {
     const project = await Project.create({ ...req.body, createdBy: req.user.id })
 
-    res.status(200).json({ succes: true, data: project })
+    res.status(200).json({ success: true, data: project })
   } catch (error) {
     next(error)
   }
@@ -102,7 +102,7 @@ exports.updateProject = async (req, res, next) => {
       return next(new ErrorResponse(`Project with id ${req.params.id} not found`, 404))
     }
 
-    res.status(200).json({ succes: true, data: project })
+    res.status(200).json({ success: true, data: project })
   } catch (error) {
     next(error)
   }
@@ -120,7 +120,7 @@ exports.deleteProject = async (req, res, next) => {
     }
     await project.remove()
 
-    res.status(200).json({ succes: true, data: {} })
+    res.status(200).json({ success: true, data: {} })
   } catch (error) {
     next(error)
   }

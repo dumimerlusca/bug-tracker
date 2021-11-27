@@ -16,7 +16,7 @@ const errorHandler = (err, req, res, next) => {
   // Mongoose duplicated fieds
   if (err.code === 11000) {
     const message = "Duplicated fields value entered";
-    error = new ErrorResponse(message, 400);
+    error = new Error(message);
   }
 
   // Mogoose validation error ( missing required fields )
@@ -26,7 +26,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
 
-  res.status(error.statusCode || 500).json({ succes: false, error: error.message || 'Server error' })
+  res.status(error.statusCode || 500).json({ success: false, error: error.message || 'Server error' })
 }
 
 module.exports = errorHandler;

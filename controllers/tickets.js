@@ -22,7 +22,7 @@ exports.getTickets = async (req, res, next) => {
 
     const tickets = await query;
     res.status(201).json({
-      succes: true,
+      success: true,
       count: tickets.length,
       data: tickets
     })
@@ -42,7 +42,7 @@ exports.getTicket = async (req, res, next) => {
       return next(new ErrorResponse(`Ticket with id ${req.params.id} not found`, 404))
     }
 
-    res.status(200).json({ succes: true, data: ticket })
+    res.status(200).json({ success: true, data: ticket })
   } catch (error) {
     next(error)
   }
@@ -63,7 +63,7 @@ exports.addTicket = async (req, res, next) => {
 
     const ticket = await Ticket.create(req.body);
 
-    res.status(201).json({ succes: true, data: ticket })
+    res.status(201).json({ success: true, data: ticket })
   } catch (error) {
     next(error)
   }
@@ -83,7 +83,7 @@ exports.updateTicket = async (req, res, next) => {
       return next(new ErrorResponse(`Ticket with id ${req.params.id} not found`, 404))
     }
 
-    res.status(200).json({ succes: true, data: ticket })
+    res.status(200).json({ success: true, data: ticket })
   } catch (error) {
     next(error)
   }
@@ -100,7 +100,7 @@ exports.deleteTicket = async (req, res, next) => {
       return next(new ErrorResponse(`Ticket with id ${req.params.id} not found`, 404))
     }
 
-    res.status(200).json({ succes: true, data: {} })
+    res.status(200).json({ success: true, data: {} })
   } catch (error) {
     next(error)
   }

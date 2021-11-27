@@ -3,7 +3,8 @@ const {
   register,
   login,
   logout,
-  refresh
+  refresh,
+  getCurrentUser
 } = require('../controllers/auth')
 const { protect } = require('../middleware/auth');
 const router = express.Router();
@@ -15,5 +16,7 @@ router.route('/login').post(login)
 router.route('/logout').post(protect, logout)
 
 router.route('/refresh').post(refresh)
+
+router.route('/me').post(protect, getCurrentUser)
 
 module.exports = router;
