@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import useAuthContext from '../../context/auth/AuthContext';
 import useAlertContext from '../../context/alert/AlertContext';
 import Alert from '../Alert';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  const { register, error, clearErrors } = useAuthContext();
+  const { register, error, clearErrors, isAuthenticated } = useAuthContext();
   const { setAlert, showAlert } = useAlertContext();
 
   const [name, setName] = useState('');
@@ -12,12 +13,20 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (error) {
       setAlert(error.message, error.type);
       clearErrors();
     }
   }, [error])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated])
 
   const onSubmit = (e) => {
     e.preventDefault();

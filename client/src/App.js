@@ -10,10 +10,6 @@ function App() {
   const { accessToken, isAuthenticated } = useAuthContext();
 
 
-  useEffect(() => {
-
-  }, [])
-
   return (
     <Router>
       <Routes>

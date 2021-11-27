@@ -15,7 +15,6 @@ exports.register = async (req, res, next) => {
     req.body.password = await bcrypt.hash(req.body.password, 10)
 
     const user = await User.create(req.body)
-
     const userPayload = {
       id: user.id
     }
@@ -25,7 +24,7 @@ exports.register = async (req, res, next) => {
 
     // Generate refresh token
     const refreshToken = jwt.sign(userPayload, process.env.JWT_REFRESH_SECRET);
-
+    console.log('refreshToken:', refreshToken)
     // Store refresh token in database
     await Token.create({ refreshToken, user: user.id });
 
@@ -74,7 +73,12 @@ exports.login = async (req, res, next) => {
     const refreshToken = jwt.sign(userPayload, process.env.JWT_REFRESH_SECRET);
 
     // Update the refresh token in database
-    await Token.findOneAndUpdate({ user: user.id }, { refreshToken })
+    try {
+      await Token.findOneAndUpdate({ user: user.id }, { refreshToken })
+    } catch (error) {
+      console.log('erorr response: ', error.response)
+    }
+
 
     res.status(201)
       .cookie('refreshToken', refreshToken)
@@ -95,7 +99,7 @@ exports.refresh = async (req, res, next) => {
   // Check to see if refresh token exists in database
   const token = await Token.findOne({ refreshToken: req.cookies.refreshToken });
   if (!token) {
-    return next(new ErrorResponse('Not authorized to access this route, token not valid', 403))
+    return next(new ErrorResponse('Not authorized to access this route, token not valid', 401))
   }
   try {
     const decoded = jwt.verify(req.cookies.refreshToken, process.env.JWT_REFRESH_SECRET)
@@ -107,7 +111,7 @@ exports.refresh = async (req, res, next) => {
     res.status(200).json({ success: true, accessToken: newToken })
 
   } catch (error) {
-    return next(new ErrorResponse('Not authorized to access this route', 403))
+    return next(new ErrorResponse('Not authorized to access this route', 401))
   }
 }
 
@@ -141,6 +145,7 @@ exports.logout = async (req, res, next) => {
 // @route  POST /api/v1/auth/me
 // @acces  Private
 exports.getCurrentUser = async (req, res, next) => {
+  console.log(req.headers)
   try {
     const user = await User.findById(req.user.id).select('-password');
     if (!user) {
@@ -149,7 +154,7 @@ exports.getCurrentUser = async (req, res, next) => {
 
     res.status(200).json({ success: true, data: user })
   } catch (error) {
-    next()
+    next(error)
   }
 }
 

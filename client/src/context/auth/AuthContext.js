@@ -2,13 +2,17 @@ import React, { createContext, useReducer, useContext, useEffect } from "react";
 import reducer from './reducer';
 import useAlertContext from "../alert/AlertContext";
 import axios from 'axios';
+import setAuthToken from "../../utils/setAuthToken";
 import {
   REGISTER_FAIL,
   REGISTER_SUCCESS,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   CLEAR_ERRORS,
-  LOGOUT
+  LOGOUT,
+  USER_LOADED,
+  AUTH_ERROR,
+  REFRESH_TOKEN
 } from '../types';
 
 const AuthContext = createContext();
@@ -21,9 +25,14 @@ const AuthProvider = ({ children }) => {
     error: null
   }
 
-  const { setAlert } = useAlertContext();
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  useEffect(() => {
+    if (state.accessToken !== null || state.accessToken !== 'null' || !state.accessToken) {
+      loadUser();
+    }
+    // eslint-disable-next-line
+  }, [state.token])
 
   // Register user
   const register = async (user) => {
@@ -76,6 +85,26 @@ const AuthProvider = ({ children }) => {
     dispatch({ type: LOGOUT })
   }
 
+  // Load user
+  const loadUser = async () => {
+    // Set token in global headers
+    console.log("Load user...")
+    setAuthToken(state.accessToken);
+    try {
+      const res = await axios.post('auth/me');
+      dispatch({ type: USER_LOADED, payload: res.data.data })
+    } catch (error) {
+      if (error.response.status === 401) {
+        // Make requst to get a new access token (if refresh token is valid)
+        const res = await axios.post('auth/refresh');
+        if (res.data.accessToken) {
+          dispatch({ type: REFRESH_TOKEN, payload: res.data.accessToken })
+        }
+      }
+      console.log(error.response.data)
+    }
+  }
+
 
   // Clear errors
   const clearErrors = () => {
@@ -96,6 +125,7 @@ const AuthProvider = ({ children }) => {
     register,
     login,
     logout,
+    loadUser,
     clearErrors
   }}>
     {children}

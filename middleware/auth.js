@@ -9,7 +9,7 @@ exports.protect = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer')) {
-    return next(new ErrorResponse('Not authorized to access this route', 403))
+    return next(new ErrorResponse('Not authorized to access this route', 401))
   }
   const token = authorization.split(' ')[1];
 
@@ -21,7 +21,7 @@ exports.protect = async (req, res, next) => {
 
     req.user = { id }
   } catch (error) {
-    return next(new ErrorResponse('Not authorized to access this route, token not valid', 403))
+    return next(new ErrorResponse('Not authorized to access this route, token not valid', 401))
   }
 
   next();

@@ -1,19 +1,13 @@
 import React, { useEffect, Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import useAuthContext from '../context/auth/AuthContext';
 
 const Home = () => {
-
-  const navigate = useNavigate();
+  const { loadUser } = useAuthContext();
 
   useEffect(() => {
-    console.log('Use effect');
-    const accessToken = localStorage.getItem('accessToken');
-    console.log(accessToken);
-    if (accessToken === 'null') {
-      console.log('navigate');
-      navigate('/login')
-    }
+    loadUser();
+    // eslint-disable-next-line
   }, [])
 
   return (

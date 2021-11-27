@@ -4,7 +4,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   CLEAR_ERRORS,
-  LOGOUT
+  LOGOUT,
+  REFRESH_TOKEN,
+  USER_LOADED
 } from '../types';
 
 const reducer = (state, action) => {
@@ -33,6 +35,15 @@ const reducer = (state, action) => {
         }
       }
 
+    case USER_LOADED: {
+      return {
+        ...state,
+        isAuthenticated: true,
+        error: null,
+        user: action.payload
+      }
+    }
+
     case LOGOUT: {
       localStorage.removeItem('accessToken');
       return {
@@ -40,6 +51,16 @@ const reducer = (state, action) => {
         isAuthenticated: false,
         error: null,
         accessToken: null
+      }
+    }
+
+    case REFRESH_TOKEN: {
+      localStorage.setItem('accessToken', action.payload)
+      return {
+        ...state,
+        isAuthenticated: true,
+        error: null,
+        accessToken: action.payload
       }
     }
 
