@@ -6,7 +6,8 @@ import {
   CLEAR_ERRORS,
   LOGOUT,
   REFRESH_TOKEN,
-  USER_LOADED
+  USER_LOADED,
+  SET_LOADING
 } from '../types';
 
 const reducer = (state, action) => {
@@ -19,7 +20,8 @@ const reducer = (state, action) => {
           ...state,
           isAuthenticated: true,
           error: null,
-          accessToken: action.payload
+          accessToken: action.payload,
+          loading: false
         }
       }
 
@@ -31,7 +33,8 @@ const reducer = (state, action) => {
           ...state,
           isAuthenticated: false,
           error: action.payload,
-          accessToken: null
+          accessToken: null,
+          loading: false
         }
       }
 
@@ -40,7 +43,8 @@ const reducer = (state, action) => {
         ...state,
         isAuthenticated: true,
         error: null,
-        user: action.payload
+        user: action.payload,
+        loading: false
       }
     }
 
@@ -50,7 +54,9 @@ const reducer = (state, action) => {
         ...state,
         isAuthenticated: false,
         error: null,
-        accessToken: null
+        accessToken: null,
+        loading: false,
+        user: null
       }
     }
 
@@ -60,7 +66,8 @@ const reducer = (state, action) => {
         ...state,
         isAuthenticated: true,
         error: null,
-        accessToken: action.payload
+        accessToken: action.payload,
+        loading: false
       }
     }
 
@@ -68,6 +75,13 @@ const reducer = (state, action) => {
       return {
         ...state,
         error: null
+      }
+    }
+
+    case SET_LOADING: {
+      return {
+        ...state,
+        loading: action.payload
       }
     }
 

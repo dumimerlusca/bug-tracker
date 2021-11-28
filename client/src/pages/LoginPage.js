@@ -7,9 +7,11 @@ const LoginPage = () => {
 
   return (
     <Fragment>
-      <Header />
-      <main className="d-flex align-items-center justify-content-center bg-primary" style={{ minHeight: "100vh" }}>
-        <Login />
+      <main className="">
+        <Header />
+        <div className="form_container">
+          <Login />
+        </div>
       </main>
     </Fragment>
   )

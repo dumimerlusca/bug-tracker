@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useContext } from "react";
-import reducer from './reducer';
+import reducer from './alertReducer';
 
 const AlertContext = createContext();
 

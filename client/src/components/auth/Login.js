@@ -8,21 +8,23 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { setAlert, showAlert } = useAlertContext();
-  const { login, isAuthenticated, error, clearErrors } = useAuthContext();
+  const { login, isAuthenticated, error, clearErrors, loading } = useAuthContext();
   const navigate = useNavigate();
 
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/')
+    if (isAuthenticated && !loading) {
+      navigate('/dashboard')
     }
-  }, [isAuthenticated])
+    // eslint-disable-next-line
+  }, [isAuthenticated, loading])
 
   useEffect(() => {
     if (error) {
       setAlert(error.message, error.type);
       clearErrors();
     }
+    // eslint-disable-next-line
   }, [error])
 
   const onChange = (e) => {
@@ -45,29 +47,29 @@ const Login = () => {
 
 
   return (
-    <form onSubmit={(e) => { onSubmit(e) }} className="w-100 bg-red px-2" style={{ maxWidth: '500px' }}>
-      <h1>Login</h1>
+    <form onSubmit={(e) => { onSubmit(e) }} className="form">
+      <h1 className="text-3xl font-semibold mb-7 text-center">Login</h1>
 
       {showAlert && <Alert />}
 
       <div className="mb-2">
-        <label htmlFor="email" className="form-label">Email</label>
+        <label htmlFor="email" className="form_label">Email</label>
         <input
           onChange={(e) => { onChange(e) }}
           name="email"
           value={email}
-          className="form-control"
+          className="form_input"
           type="email" />
       </div>
       <div className="mb-2">
-        <label htmlFor="password" className="form-label">Password</label>
+        <label htmlFor="password" className="form_label">Password</label>
         <input onChange={(e) => { onChange(e) }}
           name="password"
           value={password}
-          className="form-control"
+          className="form_input"
           type="password" />
       </div>
-      <input type="submit" className="btn btn-secondary mt-3" />
+      <input type="submit" className="mt-5 py-1 text-center w-full hover:opacity-75 bg-gray-900 text-white" />
     </form>
   )
 }

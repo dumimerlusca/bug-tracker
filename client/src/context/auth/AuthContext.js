@@ -1,6 +1,5 @@
 import React, { createContext, useReducer, useContext, useEffect } from "react";
-import reducer from './reducer';
-import useAlertContext from "../alert/AlertContext";
+import reducer from './authReducer';
 import axios from 'axios';
 import setAuthToken from "../../utils/setAuthToken";
 import {
@@ -12,7 +11,8 @@ import {
   LOGOUT,
   USER_LOADED,
   AUTH_ERROR,
-  REFRESH_TOKEN
+  REFRESH_TOKEN,
+  SET_LOADING
 } from '../types';
 
 const AuthContext = createContext();
@@ -22,20 +22,22 @@ const AuthProvider = ({ children }) => {
   const initialState = {
     isAuthenticated: null,
     accessToken: localStorage.getItem('accessToken'),
-    error: null
+    error: null,
+    loading: true
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    if (state.accessToken !== null || state.accessToken !== 'null' || !state.accessToken) {
+    if (state.accessToken) {
       loadUser();
     }
     // eslint-disable-next-line
-  }, [state.token])
+  }, [state.accessToken])
 
   // Register user
   const register = async (user) => {
+    setLoading(true);
     const config = {
       headers: {
         'Content-type': 'application/json'
@@ -63,6 +65,7 @@ const AuthProvider = ({ children }) => {
 
   // Login user
   const login = async (formData) => {
+    setLoading(true);
     const config = {
       headers: {
         'Content-type': 'application/json'
@@ -87,6 +90,7 @@ const AuthProvider = ({ children }) => {
 
   // Load user
   const loadUser = async () => {
+    setLoading(true);
     // Set token in global headers
     console.log("Load user...")
     setAuthToken(state.accessToken);
@@ -98,11 +102,17 @@ const AuthProvider = ({ children }) => {
         // Make requst to get a new access token (if refresh token is valid)
         const res = await axios.post('auth/refresh');
         if (res.data.accessToken) {
-          dispatch({ type: REFRESH_TOKEN, payload: res.data.accessToken })
+          console.log('REFRESH TOKEN')
+          dispatch({ type: REFRESH_TOKEN, payload: res.data.accessToken });
         }
       }
       console.log(error.response.data)
     }
+  }
+
+  // Set loading
+  const setLoading = (bool) => {
+    dispatch({ type: SET_LOADING, payload: bool })
   }
 
 

@@ -63,4 +63,6 @@ Relations
   # *Each ticket is asigned to one or more developers
   
     
-
+TO DOS 
+- build the front end
+- create logout api route to clear to delete the refresh token from cookie

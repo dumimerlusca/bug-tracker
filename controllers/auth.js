@@ -145,7 +145,6 @@ exports.logout = async (req, res, next) => {
 // @route  POST /api/v1/auth/me
 // @acces  Private
 exports.getCurrentUser = async (req, res, next) => {
-  console.log(req.headers)
   try {
     const user = await User.findById(req.user.id).select('-password');
     if (!user) {
@@ -161,7 +160,7 @@ exports.getCurrentUser = async (req, res, next) => {
 
 // Generate Access token
 const generateAccessToken = (payload) => {
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15s' })
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15m' })
   return token;
 }
 

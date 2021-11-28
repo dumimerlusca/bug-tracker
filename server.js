@@ -22,11 +22,13 @@ app.use(cookieParser());
 const projects = require('./routes/projects');
 const tickets = require('./routes/tickets');
 const auth = require('./routes/auth');
+const users = require('./routes/users');
 
 // Mount routers
 app.use('/api/v1/projects', projects)
 app.use('/api/v1/tickets', tickets)
 app.use('/api/v1/auth', auth)
+app.use('/api/v1/users', users)
 
 // Error handler
 app.use(errorHandler)
