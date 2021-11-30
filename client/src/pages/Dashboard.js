@@ -2,6 +2,7 @@ import React, { useEffect, Fragment } from 'react';
 import useAuthContext from '../context/auth/AuthContext';
 import SideMenu from '../components/SideMenu';
 import DashboardHeader from '../components/DashboardHeader';
+import { Outlet } from 'react-router';
 
 const Dashboard = () => {
   return (
@@ -9,7 +10,9 @@ const Dashboard = () => {
       <SideMenu />
       <div className="main_container">
         <DashboardHeader />
-        Dashboard page
+        <div className="container">
+          <Outlet />
+        </div>
       </div>
     </Fragment>
   )

@@ -6,6 +6,7 @@ import {
   CLEAR_ERRORS,
   LOGOUT,
   REFRESH_TOKEN,
+  AUTH_ERROR,
   USER_LOADED,
   SET_LOADING
 } from '../types';
@@ -27,6 +28,7 @@ const reducer = (state, action) => {
 
     case REGISTER_FAIL:
     case LOGIN_FAIL:
+    case AUTH_ERROR:
       {
         localStorage.removeItem('accessToken');
         return {
@@ -39,6 +41,7 @@ const reducer = (state, action) => {
       }
 
     case USER_LOADED: {
+      console.log('Load user success!')
       return {
         ...state,
         isAuthenticated: true,
@@ -62,12 +65,12 @@ const reducer = (state, action) => {
 
     case REFRESH_TOKEN: {
       localStorage.setItem('accessToken', action.payload)
+      console.log('refresh token Succes')
       return {
         ...state,
-        isAuthenticated: true,
         error: null,
         accessToken: action.payload,
-        loading: false
+        loading: true
       }
     }
 

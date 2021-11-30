@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdDashboardCustomize } from 'react-icons/md'
 import { FaProjectDiagram, FaUserCog } from 'react-icons/fa'
 import { GiTicket } from 'react-icons/gi';
 import Logout from './auth/Logout';
 import useAuthContext from '../context/auth/AuthContext';
+import Loading from '../components/Loading';
 
 const SideMenu = () => {
   const { user } = useAuthContext();
@@ -16,7 +17,7 @@ const SideMenu = () => {
       </div>
       <nav className="side_nav">
         <ul>
-          <li><Link to="/dashboard" className="side_menu_link"> <MdDashboardCustomize /> Dashboard Home </Link> </li>
+          <li><Link to="/" className="side_menu_link"> <MdDashboardCustomize /> Dashboard Home </Link> </li>
           {user.role === 'admin' &&
             <li><Link to="/manageUsers" className="side_menu_link"> <MdDashboardCustomize /> Manage users </Link> </li>
           }

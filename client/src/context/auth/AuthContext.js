@@ -29,10 +29,9 @@ const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    if (state.accessToken) {
-      loadUser();
-    }
-    // eslint-disable-next-line
+    loadUser();
+    //eslint-disable-next-line
+
   }, [state.accessToken])
 
   // Register user
@@ -44,7 +43,7 @@ const AuthProvider = ({ children }) => {
       }
     }
     try {
-      const res = await axios.post('auth/register', user, config);
+      const res = await axios.post('/auth/register', user, config);
       dispatch({ type: REGISTER_SUCCESS, payload: res.data.accessToken })
     } catch (error) {
       const data = error.response.data
@@ -73,7 +72,7 @@ const AuthProvider = ({ children }) => {
     }
 
     try {
-      const res = await axios.post('auth/login', formData, config);
+      const res = await axios.post('/auth/login', formData, config);
       dispatch({ type: LOGIN_SUCCESS, payload: res.data.accessToken })
     } catch (error) {
       const data = error.response.data;
@@ -83,9 +82,18 @@ const AuthProvider = ({ children }) => {
   }
 
   // Logout
-  const logout = () => {
-    console.log('Logout');
-    dispatch({ type: LOGOUT })
+  const logout = async () => {
+    const config = {
+      headers: {
+        'Content-type': 'application/json'
+      }
+    }
+    try {
+      const res = await axios.post('/auth/logout', config);
+      dispatch({ type: LOGOUT })
+    } catch (error) {
+      dispatch({ type: AUTH_ERROR })
+    }
   }
 
   // Load user
@@ -94,19 +102,31 @@ const AuthProvider = ({ children }) => {
     // Set token in global headers
     console.log("Load user...")
     setAuthToken(state.accessToken);
+    console.log('Acces token', state.accessToken)
     try {
-      const res = await axios.post('auth/me');
+      const res = await axios.post('/auth/me');
       dispatch({ type: USER_LOADED, payload: res.data.data })
     } catch (error) {
       if (error.response.status === 401) {
         // Make requst to get a new access token (if refresh token is valid)
-        const res = await axios.post('auth/refresh');
-        if (res.data.accessToken) {
-          console.log('REFRESH TOKEN')
-          dispatch({ type: REFRESH_TOKEN, payload: res.data.accessToken });
-        }
+        checkRefreshToken()
+      } else {
+        dispatch({ type: AUTH_ERROR, payload: error.message })
       }
-      console.log(error.response.data)
+
+    }
+  }
+
+  // Check refresh token
+  const checkRefreshToken = async () => {
+    try {
+      const res = await axios.post('/auth/refresh')
+      if (res.data.accessToken) {
+        console.log('REFRESH TOKEN')
+        dispatch({ type: REFRESH_TOKEN, payload: res.data.accessToken });
+      }
+    } catch (error) {
+      dispatch({ type: AUTH_ERROR, payload: error.response.message });
     }
   }
 
@@ -136,7 +156,8 @@ const AuthProvider = ({ children }) => {
     login,
     logout,
     loadUser,
-    clearErrors
+    clearErrors,
+    checkRefreshToken
   }}>
     {children}
   </AuthContext.Provider>)

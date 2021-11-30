@@ -16,7 +16,7 @@ router.use('/:id/tickets', ticketsRouter)
 
 router.route('/')
   .get(getProjects)
-  .post(protect, authorize(['admin']), addProject)
+  .post(protect, authorize(["admin"]), addProject)
 
 router.route('/:id')
   .get(getProject)

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuthContext from '../../context/auth/AuthContext';
+import Loading from '../Loading';
 const PrivateRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuthContext();
+  const { isAuthenticated, loading, user, loadUser } = useAuthContext();
+
   if (loading) {
-    return <h1>Loading...</h1>
+    return <div className="flex items-center justify-center w-full h-screen">
+      <Loading />
+    </div>
   }
-  return isAuthenticated ? children : <Navigate to="/login" />
+  return (!isAuthenticated) ? <Navigate to="/login" /> : children
 
 }
 

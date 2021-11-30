@@ -18,7 +18,7 @@ const UsersProvider = ({ children }) => {
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { loadUser } = useAuthContext();
+  const { loadUser, checkRefreshToken } = useAuthContext();
 
   // GET ALL USERS FROM DATABASE
   const getUsers = async () => {
@@ -27,8 +27,9 @@ const UsersProvider = ({ children }) => {
       const res = await axios.get('/users');
       dispatch({ type: GET_USERS_SUCCESS, payload: res.data.data })
     } catch (error) {
-      dispatch({ type: GET_USERS_FAIL })
-      console.log(error.response)
+      if (error.response.status === 401) {
+        checkRefreshToken()
+      }
     }
   }
 
@@ -45,7 +46,9 @@ const UsersProvider = ({ children }) => {
       getUsers();
       loadUser();
     } catch (error) {
-      console.error(error.message)
+      if (error.response.status === 401) {
+        checkRefreshToken()
+      }
     }
 
   }

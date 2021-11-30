@@ -72,11 +72,14 @@ exports.login = async (req, res, next) => {
     // Generate new refresh token
     const refreshToken = jwt.sign(userPayload, process.env.JWT_REFRESH_SECRET);
 
-    // Update the refresh token in database
+    // Update the refresh token in database or create a new one
     try {
-      await Token.findOneAndUpdate({ user: user.id }, { refreshToken })
+      const tokenDB = await Token.findOneAndUpdate({ user: user.id }, { refreshToken })
+      if (!tokenDB) {
+        await Token.create({ user: user.id, refreshToken })
+      }
     } catch (error) {
-      console.log('erorr response: ', error.response)
+      next(error)
     }
 
 
@@ -125,12 +128,16 @@ exports.logout = async (req, res, next) => {
   if (req.body.refreshToken) {
     refreshToken = req.body.refreshToken;
   } else {
-    refreshToken = req.headers.cookie.split('=')[1];
+    refreshToken = req.cookies.refreshToken;
   }
+  console.log(req.cookies)
   // Check if refresh token exist
   if (!refreshToken) {
     res.status(200).json({ success: true, msg: "Logout, no token" });
   }
+
+  // Remove token from cookies
+
 
   // Find and remove the token from the active tokens database
   try {
@@ -160,7 +167,7 @@ exports.getCurrentUser = async (req, res, next) => {
 
 // Generate Access token
 const generateAccessToken = (payload) => {
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15m' })
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' })
   return token;
 }
 

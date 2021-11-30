@@ -21,7 +21,23 @@ exports.getProjects = async (req, res, next) => {
     const queryStr = JSON.stringify(reqQuery).replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`)
 
     // Finding resource
-    query = Project.find(JSON.parse(queryStr)).populate('tickets');
+    query = Project.find(JSON.parse(queryStr))
+      .populate({
+        path: 'tickets',
+        model: 'Ticket',
+        populate: [{
+          path: 'createdBy',
+          model: 'User'
+        },
+        {
+          path: 'developers',
+          model: 'User'
+        }
+        ]
+      })
+      .populate('developers')
+      .populate('createdBy')
+
 
     // Select fields
     if (req.query.select) {
@@ -58,12 +74,27 @@ exports.getProjects = async (req, res, next) => {
   }
 }
 
-// @desc   Get single projects
+// @desc   Get single project
 // @route  GET /api/v1/projects/:id
 // @acces  Public
 exports.getProject = async (req, res, next) => {
   try {
-    const project = await Project.findById(req.params.id);
+    const project = await Project.findById(req.params.id)
+      .populate({
+        path: 'tickets',
+        model: 'Ticket',
+        populate: [{
+          path: 'createdBy',
+          model: 'User'
+        },
+        {
+          path: 'developers',
+          model: 'User'
+        }
+        ]
+      })
+      .populate('developers')
+      .populate('createdBy')
 
     if (!project) {
       return next(new ErrorResponse(`Project with id ${req.params.id} not found`, 404))
@@ -80,6 +111,7 @@ exports.getProject = async (req, res, next) => {
 // @acces  Private
 exports.addProject = async (req, res, next) => {
   try {
+    console.log('addproject')
     const project = await Project.create({ ...req.body, createdBy: req.user.id })
 
     res.status(200).json({ success: true, data: project })

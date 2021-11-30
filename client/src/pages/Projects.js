@@ -1,15 +1,17 @@
 import React, { Fragment } from 'react';
-import DashboardHeader from '../components/DashboardHeader';
-import SideMenu from '../components/SideMenu';
+import { Outlet, Route, Routes } from 'react-router';
+import AllProjects from '../components/projects/AllProjects'
+import SingleProject from '../components/projects/SingleProject';
 
 const Projects = () => {
+
   return (
     <Fragment>
-      <SideMenu />
-      <div className="main_container">
-        <DashboardHeader />
-        Projects page
-      </div>
+      <Routes>
+        <Route path="/" element={<AllProjects />} />
+        <Route path=":id" element={<SingleProject />} />
+      </Routes>
+      <Outlet />
     </Fragment>
   )
 }

@@ -14,7 +14,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated && !loading) {
-      navigate('/dashboard')
+      navigate('/')
     }
     // eslint-disable-next-line
   }, [isAuthenticated, loading])

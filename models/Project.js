@@ -24,9 +24,7 @@ const ProjectSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User'
   },
-  developers: {
-    type: Array
-  }
+  developers: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 }, {
   toJSON: { virtuals: true },
   toObject: { virtuals: true }

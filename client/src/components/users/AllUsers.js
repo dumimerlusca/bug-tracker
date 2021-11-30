@@ -7,20 +7,24 @@ const AllUsers = () => {
   return (
     <Fragment>
       <h2 className="text-2xl text-center">All the users in database</h2>
-      <table className="mx-auto">
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
-        </tr>
-        {loading !== true && users.map(user => {
-          const { email, role, name } = user
-          return <tr key={user._id}>
-            <td>{name}</td>
-            <td>{email}</td>
-            <td>{role}</td>
+      <table className="mx-auto mt-5">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
           </tr>
-        })}
+        </thead>
+        <tbody>
+          {loading !== true && users.map(user => {
+            const { email, role, name } = user
+            return <tr key={user._id}>
+              <td>{name}</td>
+              <td>{email}</td>
+              <td>{role}</td>
+            </tr>
+          })}
+        </tbody>
       </table>
     </Fragment>
   )

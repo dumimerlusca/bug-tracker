@@ -14,11 +14,16 @@ exports.getTickets = async (req, res, next) => {
     if (req.params.id) {
       query = Ticket.find({ project: req.params.id })
     } else {
-      query = Ticket.find().populate({
+      query = Ticket.find()
+    }
+
+    query = query
+      .populate('developers')
+      .populate('createdBy')
+      .populate({
         path: 'project',
         select: 'name description'
       });
-    }
 
     const tickets = await query;
     res.status(201).json({
@@ -36,7 +41,13 @@ exports.getTickets = async (req, res, next) => {
 // @acces  Public
 exports.getTicket = async (req, res, next) => {
   try {
-    const ticket = await Ticket.findById(req.params.id);
+    const ticket = await Ticket.findById(req.params.id)
+      .populate('developers')
+      .populate('createdBy')
+      .populate({
+        path: 'project',
+        select: 'name description'
+      })
 
     if (!ticket) {
       return next(new ErrorResponse(`Ticket with id ${req.params.id} not found`, 404))
