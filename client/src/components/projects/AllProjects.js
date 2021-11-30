@@ -1,13 +1,22 @@
 import React, { useEffect } from 'react';
 import useProjectsContext from '../../context/projects/ProjectsContext';
 import { Link } from 'react-router-dom';
+import Loading from '../Loading';
 
 const AllProjects = () => {
-  const { projects, getProjects } = useProjectsContext();
+  const { projects, getProjects, loading } = useProjectsContext();
 
   useEffect(() => {
-    getProjects();
+    if (!projects) {
+      getProjects();
+    }
   }, [])
+
+  if (loading) {
+    return <div className="w-full h-screen flex justify-center items-center">
+      <Loading />
+    </div>
+  }
 
   return (
     <table className="mx-auto mt-10 text-left w-full">
@@ -27,7 +36,7 @@ const AllProjects = () => {
               <td>{description}</td>
               <td className="flex flex-col items-end ml-10">
                 <ul className="list-disc">
-                  <li><button>Manage users</button></li>
+                  <li><Link to={`/projects/${_id}/manageUsers`}>Manage users</Link></li>
                   <li><Link to={`/projects/${_id}`}>Details</Link></li>
                 </ul>
               </td>

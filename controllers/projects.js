@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Project = require('../models/Project');
 const ErrorResponse = require('../utils/errorResponse');
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
 // @desc   Get all projects
 // @route  GET /api/v1/projects
@@ -12,7 +13,7 @@ exports.getProjects = async (req, res, next) => {
     const reqQuery = { ...req.query }
 
     // Fields to exclude
-    const removeFields = ['select', 'sort', 'limit', 'page'];
+    const removeFields = ['select', 'sort', 'limit', 'page', 'user'];
     removeFields.forEach(field => {
       delete reqQuery[field]
     })
@@ -20,23 +21,36 @@ exports.getProjects = async (req, res, next) => {
     // Format the query
     const queryStr = JSON.stringify(reqQuery).replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`)
 
-    // Finding resource
-    query = Project.find(JSON.parse(queryStr))
-      .populate({
-        path: 'tickets',
-        model: 'Ticket',
-        populate: [{
-          path: 'createdBy',
-          model: 'User'
-        },
-        {
-          path: 'developers',
-          model: 'User'
+    // Find only the project of specific user (project manager)
+    if (req.query.user) {
+      try {
+        const user = await User.findById(req.query.user);
+        if (!user) {
+          return next(new ErrorResponse(`No user with id ${req.query.user}`, 404))
         }
-        ]
-      })
-      .populate('developers')
-      .populate('createdBy')
+        query = Project.find({ project_manager: req.query.user })
+      } catch (error) {
+        return next(error)
+      }
+    } else {
+      // Finding all projects
+      query = Project.find(JSON.parse(queryStr))
+        .populate({
+          path: 'tickets',
+          model: 'Ticket',
+          populate: [{
+            path: 'createdBy',
+            model: 'User'
+          },
+          {
+            path: 'developers',
+            model: 'User'
+          }
+          ]
+        })
+        .populate('developers')
+        .populate('createdBy')
+    }
 
 
     // Select fields

@@ -19,9 +19,12 @@ const SideMenu = () => {
         <ul>
           <li><Link to="/" className="side_menu_link"> <MdDashboardCustomize /> Dashboard Home </Link> </li>
           {user.role === 'admin' &&
-            <li><Link to="/manageUsers" className="side_menu_link"> <MdDashboardCustomize /> Manage users </Link> </li>
+            <>
+              <li><Link to="/manageRoles" className="side_menu_link"> <MdDashboardCustomize /> Manage Role Assignment </Link> </li>
+              <li><Link to="/allProjects" className="side_menu_link"> <MdDashboardCustomize /> All projects </Link> </li>
+            </>
           }
-          <li><Link to="/projects" className="side_menu_link flex"> <FaProjectDiagram /> <span>Projects</span> </Link> </li>
+          <li><Link to="/projects" className="side_menu_link flex"> <FaProjectDiagram /> <span>My Projects</span> </Link> </li>
           <li><Link to="/tickets" className="side_menu_link"> <GiTicket /> Tickets </Link> </li>
           <li><Link to="/profile" className="side_menu_link"> <FaProjectDiagram /> user Profile </Link> </li>
           <li><Logout /></li>
