@@ -5,79 +5,107 @@ import Alert from '../Alert';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  const { register, error, clearErrors, isAuthenticated } = useAuthContext();
-  const { setAlert, showAlert } = useAlertContext();
+  const { register, alert, clearAlerts, isAuthenticated } = useAuthContext();
+  const { setAlert } = useAlertContext();
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password2: ''
+  })
+  const { name, email, password, password2 } = user;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (error) {
-      setAlert(error.message, error.type);
-      clearErrors();
+    if (alert) {
+      if (alert.message === 'Duplicated fields value entered') {
+        setAlert({ message: 'User already exists !', type: 'danger' });
+        clearAlerts();
+        return
+      }
+      setAlert(alert)
+      clearAlerts();
     }
-  }, [error])
+
+    // eslint-disable-next-line
+  }, [alert])
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard')
+      navigate('/')
     }
+
+    // eslint-disable-next-line
   }, [isAuthenticated])
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (name.trim() === '' || email.trim() === "" || password.trim() === "" || password2.trim() === "") {
-      setAlert('Please fill out all the fields', 'danger')
+      setAlert({ message: 'Please fill out all the fields', type: 'danger' })
       return;
     }
 
     if (password !== password2) {
-      setAlert('Passwords do not match', 'danger')
+      setAlert({ message: 'Passwords do not match', type: 'danger' })
       return;
     }
-    const user = {
+    const newUser = {
       name,
       email,
       password
     }
-    register(user);
+    register(newUser);
   }
 
   const onChange = (target, value) => {
-    switch (target.name) {
-      case 'name': { setName(value); break }
-      case 'email': { setEmail(value); break }
-      case 'password': { setPassword(value); break }
-      case 'password2': { setPassword2(value); break }
-      default: { return }
-    }
+    setUser({ ...user, [target.name]: value })
   }
 
   return (
     <form onSubmit={(e) => { onSubmit(e) }} className="form">
       <h1 className="text-3xl font-semibold mb-7 text-center">Register</h1>
 
-      {showAlert && <Alert />}
+      <Alert />
 
       <div className="mb-2">
         <label htmlFor="name" className="form_label">Name</label>
-        <input onChange={(e) => onChange(e.target, e.target.value)} value={name} className="form_input" name="name" id="name" type="text" />
+        <input onChange={(e) => onChange(e.target, e.target.value)}
+          value={name}
+          className="form_input"
+          name="name"
+          id="name"
+          type="text" />
       </div>
       <div className="mb-2">
         <label htmlFor="email" className="form_label">Email</label>
-        <input onChange={(e) => onChange(e.target, e.target.value)} value={email} className="form_input" name="email" id="email" type="text" />
+        <input onChange={(e) => onChange(e.target, e.target.value)}
+          value={email}
+          className="form_input"
+          name="email"
+          id="email"
+          type="text" />
       </div>
       <div className="mb-2">
         <label htmlFor="password" className="form_label">Password</label>
-        <input onChange={(e) => onChange(e.target, e.target.value)} value={password} className="form_input" name="password" id="password" type="password" />
+        <input onChange={(e) => onChange(e.target, e.target.value)}
+          value={password}
+          className="form_input"
+          name="password"
+          id="password"
+          type="password"
+          minLength="6" />
       </div>
       <div className="mb-2">
         <label htmlFor="password2" className="form_label">Confirm password</label>
-        <input onChange={(e) => onChange(e.target, e.target.value)} value={password2} className="form_input" name="password2" id="password2" type="password" />
+        <input onChange={(e) => onChange(e.target, e.target.value)}
+          value={password2}
+          className="form_input"
+          name="password2"
+          id="password2"
+          type="password"
+          minLength="6" />
       </div>
       <input type="submit" className="mt-5 py-1 text-center w-full hover:opacity-75 bg-gray-900 text-white" />
     </form>

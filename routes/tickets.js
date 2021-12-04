@@ -12,7 +12,7 @@ const router = express.Router({ mergeParams: true });
 
 router.route('/')
   .get(protect, getTickets)
-  .post(protect, authorize(['admin', 'submitter', 'project manager']), addTicket)
+  .post(protect, addTicket)
 
 router.route('/:id')
   .get(getTicket)

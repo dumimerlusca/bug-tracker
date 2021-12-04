@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuthContext from '../../context/auth/AuthContext';
 import Loading from '../Loading';
 const PrivateRoute = ({ children }) => {
-  const { isAuthenticated, loading, user, loadUser } = useAuthContext();
+  const { isAuthenticated, loading } = useAuthContext();
 
   if (loading) {
     return <div className="flex items-center justify-center w-full h-screen">

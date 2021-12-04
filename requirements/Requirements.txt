@@ -68,12 +68,15 @@ TO DOS
 - create logout api route to clear to delete the refresh token from cookie
 
 
+
 CLIENT
   PROJECTS PAGE
     -create project
     -show all project in a table
     -details button
     -manage users
+  TICKETS PAGE 
+    -create ticket (all users)
 
 API 
 - create ownership relationship for projects

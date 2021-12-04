@@ -5,28 +5,91 @@ import { FaProjectDiagram, FaUserCog } from 'react-icons/fa'
 import { GiTicket } from 'react-icons/gi';
 import Logout from './auth/Logout';
 import useAuthContext from '../context/auth/AuthContext';
-import Loading from '../components/Loading';
+import useUiContext from '../context/ui/UiContext';
 
 const SideMenu = () => {
   const { user } = useAuthContext();
+  const { isSideMenuVisible, hideSideMenu } = useUiContext();
+
+  useEffect(() => {
+    if (window.innerWidth < 1280) {
+      hideSideMenu()
+    }
+  }, [])
 
   return (
-    <div className="side_menu bg-gray-100 shadow-lg">
-      <div className="px-2 py-6">
-        <h1 className="text-3xl">Welcome  {user.name}!</h1>
+    <div className={`side_menu bg-secondary-100 shadow-xl text-dark ${isSideMenuVisible ? 'active' : null}`}>
+      <div className="top_message w-full shadow-xl">
+        <h1 className="text-3xl text-center py-5 bg-primary-200 font-thin">
+          Welcome  {user.name}!
+        </h1>
       </div>
-      <nav className="side_nav">
+      <nav className="side_nav w-full">
         <ul>
-          <li><Link to="/" className="side_menu_link"> <MdDashboardCustomize /> Dashboard Home </Link> </li>
+          <li>
+            <Link to="/dashboard"
+              className="side_menu_link"
+              onClick={hideSideMenu}>
+              <MdDashboardCustomize />
+              <span className="font-thin">
+                Dashboard Home
+              </span>
+            </Link>
+          </li>
           {user.role === 'admin' &&
             <>
-              <li><Link to="/manageRoles" className="side_menu_link"> <MdDashboardCustomize /> Manage Role Assignment </Link> </li>
-              <li><Link to="/allProjects" className="side_menu_link"> <MdDashboardCustomize /> All projects </Link> </li>
+              <li>
+                <Link to="/dashboard/manageRoles"
+                  className="side_menu_link"
+                  onClick={hideSideMenu}>
+                  <MdDashboardCustomize />
+                  <span className="font-thin">
+                    Manage Role Assignment
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/dashboard/projects"
+                  className="side_menu_link"
+                  onClick={hideSideMenu}>
+                  <MdDashboardCustomize />
+                  <span className="font-thin">
+                    All Projects
+                  </span>
+                </Link>
+              </li>
             </>
           }
-          <li><Link to="/projects" className="side_menu_link flex"> <FaProjectDiagram /> <span>My Projects</span> </Link> </li>
-          <li><Link to="/tickets" className="side_menu_link"> <GiTicket /> Tickets </Link> </li>
-          <li><Link to="/profile" className="side_menu_link"> <FaProjectDiagram /> user Profile </Link> </li>
+          <li>
+            <Link to="/dashboard/projects/myProjects"
+              className="side_menu_link flex"
+              onClick={hideSideMenu}>
+              <FaProjectDiagram />
+              <span className="font-thin">
+                My Projects
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/dashboard/tickets"
+              className="side_menu_link"
+              onClick={hideSideMenu}>
+              <GiTicket />
+              <span className="font-thin">
+                My Tickets
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/dashboard/profile"
+              className="side_menu_link"
+              onClick={hideSideMenu}>
+              <FaProjectDiagram />
+              <span className="font-thin">
+                User profile
+              </span>
+            </Link>
+          </li>
           <li><Logout /></li>
         </ul>
       </nav>

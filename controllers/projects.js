@@ -21,14 +21,14 @@ exports.getProjects = async (req, res, next) => {
     // Format the query
     const queryStr = JSON.stringify(reqQuery).replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`)
 
-    // Find only the project of specific user (project manager)
+    // Find only the projects of specific user
     if (req.query.user) {
       try {
         const user = await User.findById(req.query.user);
         if (!user) {
           return next(new ErrorResponse(`No user with id ${req.query.user}`, 404))
         }
-        query = Project.find({ project_manager: req.query.user })
+        query = Project.find({ users: req.query.user })
       } catch (error) {
         return next(error)
       }
@@ -39,16 +39,16 @@ exports.getProjects = async (req, res, next) => {
           path: 'tickets',
           model: 'Ticket',
           populate: [{
-            path: 'createdBy',
+            path: 'submitter',
             model: 'User'
           },
           {
-            path: 'developers',
+            path: 'developer',
             model: 'User'
           }
           ]
         })
-        .populate('developers')
+        .populate('users')
         .populate('createdBy')
     }
 
@@ -98,16 +98,16 @@ exports.getProject = async (req, res, next) => {
         path: 'tickets',
         model: 'Ticket',
         populate: [{
-          path: 'createdBy',
+          path: 'submitter',
           model: 'User'
         },
         {
-          path: 'developers',
+          path: 'developer',
           model: 'User'
         }
         ]
       })
-      .populate('developers')
+      .populate('users')
       .populate('createdBy')
 
     if (!project) {
@@ -125,7 +125,6 @@ exports.getProject = async (req, res, next) => {
 // @acces  Private
 exports.addProject = async (req, res, next) => {
   try {
-    console.log('addproject')
     const project = await Project.create({ ...req.body, createdBy: req.user.id })
 
     res.status(200).json({ success: true, data: project })
@@ -135,7 +134,7 @@ exports.addProject = async (req, res, next) => {
 }
 
 // @desc   Update project
-// @route  PUT /api/v1/project/:id
+// @route  PUT /api/v1/projects/:id
 // @acces  Private
 exports.updateProject = async (req, res, next) => {
   try {
@@ -155,7 +154,7 @@ exports.updateProject = async (req, res, next) => {
 }
 
 // @desc   Delete project
-// @route  DELETE /api/v1/project/:id
+// @route  DELETE /api/v1/projects/:id
 // @acces  Private
 exports.deleteProject = async (req, res, next) => {
   try {

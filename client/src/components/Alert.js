@@ -2,10 +2,8 @@ import React from 'react';
 import useAlertContext from '../context/alert/AlertContext';
 
 const Alert = () => {
-  const { showAlert, type, message } = useAlertContext();
-  return (
-    <div className={`alert p-2 alert-${type}`}>{message}</div>
-  )
+  const { alert } = useAlertContext();
+  return alert ? <div className={`alert p-2 alert-${alert.type}`}>{alert.message}</div> : null
 }
 
 export default Alert

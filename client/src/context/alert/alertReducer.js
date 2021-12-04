@@ -4,17 +4,13 @@ const reducer = (state, action) => {
     case 'SET_ALERT': {
       return {
         ...state,
-        showAlert: true,
-        message: action.payload.msg,
-        type: action.payload.type
+        alert: action.payload
       }
     }
     case 'REMOVE_ALERT': {
       return {
         ...state,
-        showAlert: false,
-        message: null,
-        type: null
+        alert: null
       }
     }
     default: {

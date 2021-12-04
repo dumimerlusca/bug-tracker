@@ -5,7 +5,10 @@ import useAuthContext from "../auth/AuthContext";
 import {
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
-  SET_LOADING
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAIL,
+  SET_LOADING,
+  CLEAR_ALERTS
 } from '../types'
 
 const UsersContext = createContext();
@@ -14,7 +17,8 @@ const UsersProvider = ({ children }) => {
   const initialState = {
     users: null,
     selectedUser: null,
-    loading: true
+    loading: false,
+    alert: null
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -27,14 +31,13 @@ const UsersProvider = ({ children }) => {
       const res = await axios.get('/users');
       dispatch({ type: GET_USERS_SUCCESS, payload: res.data.data })
     } catch (error) {
-      if (error.response.status === 401) {
-        checkRefreshToken()
-      }
+      dispatch({ type: GET_USERS_FAIL, payload: error.response.data.error })
     }
   }
 
   // UPDATE USER
   const updateUser = async (id, data) => {
+    setLoading(true)
     const config = {
       headers: {
         'Content-type': 'application/json'
@@ -42,15 +45,16 @@ const UsersProvider = ({ children }) => {
     }
     try {
       const res = await axios.put(`/users/${id}`, data, config)
-      console.log(res.data)
-      getUsers();
-      loadUser();
+      dispatch({ type: UPDATE_USER_SUCCESS })
     } catch (error) {
-      if (error.response.status === 401) {
-        checkRefreshToken()
-      }
+      dispatch({ type: UPDATE_USER_FAIL, payload: error.response.data.error })
     }
 
+  }
+
+  // CLEAR ALERTS
+  const clearAlerts = () => {
+    dispatch({ type: CLEAR_ALERTS })
   }
 
   //SET LOADING
@@ -61,7 +65,8 @@ const UsersProvider = ({ children }) => {
   return <UsersContext.Provider value={{
     ...state,
     getUsers,
-    updateUser
+    updateUser,
+    clearAlerts
   }}>
     {children}
   </UsersContext.Provider>

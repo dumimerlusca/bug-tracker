@@ -3,7 +3,7 @@ import {
   REGISTER_SUCCESS,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  CLEAR_ERRORS,
+  CLEAR_ALERTS,
   LOGOUT,
   REFRESH_TOKEN,
   AUTH_ERROR,
@@ -20,7 +20,7 @@ const reducer = (state, action) => {
         return {
           ...state,
           isAuthenticated: true,
-          error: null,
+          alert: null,
           accessToken: action.payload,
           loading: false
         }
@@ -28,24 +28,34 @@ const reducer = (state, action) => {
 
     case REGISTER_FAIL:
     case LOGIN_FAIL:
-    case AUTH_ERROR:
       {
         localStorage.removeItem('accessToken');
         return {
           ...state,
           isAuthenticated: false,
-          error: action.payload,
+          alert: { message: action.payload, type: 'danger' },
           accessToken: null,
           loading: false
         }
       }
+
+    case AUTH_ERROR: {
+      localStorage.removeItem('accessToken');
+      return {
+        ...state,
+        isAuthenticated: false,
+        alert: null,
+        accessToken: null,
+        loading: false
+      }
+    }
 
     case USER_LOADED: {
       console.log('Load user success!')
       return {
         ...state,
         isAuthenticated: true,
-        error: null,
+        alert: null,
         user: action.payload,
         loading: false
       }
@@ -56,7 +66,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         isAuthenticated: false,
-        error: null,
+        alert: null,
         accessToken: null,
         loading: false,
         user: null
@@ -68,16 +78,16 @@ const reducer = (state, action) => {
       console.log('refresh token Succes')
       return {
         ...state,
-        error: null,
+        alert: null,
         accessToken: action.payload,
         loading: true
       }
     }
 
-    case CLEAR_ERRORS: {
+    case CLEAR_ALERTS: {
       return {
         ...state,
-        error: null
+        alert: null
       }
     }
 

@@ -7,25 +7,25 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setAlert, showAlert } = useAlertContext();
-  const { login, isAuthenticated, error, clearErrors, loading } = useAuthContext();
+  const { setAlert } = useAlertContext();
+  const { login, isAuthenticated, alert, clearAlerts, loading } = useAuthContext();
   const navigate = useNavigate();
 
 
   useEffect(() => {
     if (isAuthenticated && !loading) {
-      navigate('/')
+      navigate('/dashboard')
     }
     // eslint-disable-next-line
   }, [isAuthenticated, loading])
 
   useEffect(() => {
-    if (error) {
-      setAlert(error.message, error.type);
-      clearErrors();
+    if (alert) {
+      setAlert(alert);
+      clearAlerts();
     }
     // eslint-disable-next-line
-  }, [error])
+  }, [alert])
 
   const onChange = (e) => {
     switch (e.target.name) {
@@ -38,7 +38,7 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (email.trim() === '' || password.trim() === '') {
-      setAlert('Please enter email and password', 'danger');
+      setAlert({ message: 'Please enter email and password', type: 'danger' });
       return;
     }
     const user = { email, password }
@@ -50,7 +50,7 @@ const Login = () => {
     <form onSubmit={(e) => { onSubmit(e) }} className="form">
       <h1 className="text-3xl font-semibold mb-7 text-center">Login</h1>
 
-      {showAlert && <Alert />}
+      <Alert />
 
       <div className="mb-2">
         <label htmlFor="email" className="form_label">Email</label>

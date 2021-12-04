@@ -1,7 +1,10 @@
 import {
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAIL,
   SET_LOADING,
+  CLEAR_ALERTS,
 } from '../types'
 
 const reducer = (state, action) => {
@@ -10,7 +13,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         users: action.payload,
-        loading: false
+        loading: false,
+        alert: null
       }
     }
 
@@ -18,7 +22,31 @@ const reducer = (state, action) => {
       return {
         ...state,
         users: null,
-        loading: false
+        loading: false,
+        alert: { message: action.payload, type: 'danger' }
+      }
+    }
+
+    case UPDATE_USER_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        alert: { message: 'User updated!', type: 'success' }
+      }
+    }
+
+    case UPDATE_USER_FAIL: {
+      return {
+        ...state,
+        loading: false,
+        alert: { message: action.payload, type: 'danger' }
+      }
+    }
+
+    case CLEAR_ALERTS: {
+      return {
+        ...state,
+        alert: null
       }
     }
 

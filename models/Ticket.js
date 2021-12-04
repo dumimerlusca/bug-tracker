@@ -14,12 +14,30 @@ const TicketSchema = new mongoose.Schema({
     ref: 'Project',
     required: true
   },
-  createdBy: {
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high', 'urgent'],
+    default: 'high'
+  },
+  status: {
+    type: String,
+    enum: ['submitted', 'in progress', 'in review', 'done'],
+    default: 'submitted'
+  },
+  type: {
+    type: String,
+    enum: ['bugs/errors'],
+    default: 'bugs/errors'
+  },
+  submitter: {
     type: mongoose.Schema.ObjectId,
     required: true,
     ref: 'User'
   },
-  developers: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  developer: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User'
+  },
   createdAt: {
     type: Date,
     default: Date.now()

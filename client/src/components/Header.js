@@ -1,10 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import useAuthContext from '../context/auth/AuthContext';
 import Logout from './auth/Logout';
 
 const Header = () => {
-  const { isAuthenticated } = useAuthContext();
 
   return (
     <header className="login_header py-2 bg-gray-800 text-white">

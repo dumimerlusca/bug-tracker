@@ -1,4 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+
+body {
+  @apply bg-primary-50
+}
 
 svg {
   display: inline-block;
@@ -8,13 +15,14 @@ svg {
 .main_container {
   width: calc(100% - 300px);
   float: right;
+  transition: all .2s linear;
 }
 
 /* UTILS */
 .container {
   width: 100%;
   max-width: 1300px;
-  padding: 0px 1.5rem;
+  padding: 0px 1rem;
   margin: auto
 }
 
@@ -24,18 +32,44 @@ svg {
   height: 100vh;
   min-height: 500px;
   position: fixed;
+  top: 0;
+  left: 0;
+  transition: all .2s linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.side_menu.active {
+  left: 0;
+}
+
+.side_menu svg {
+  @apply text-secondary-800 text-2xl
 }
 
 .side_menu_link {
   font-size: 1.2rem;
-  padding: .5rem 1rem;
-  display: inline-block;
+  padding: .8rem 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
   transition: all .3s ease;
   width: 100%;
 }
 
 .side_menu_link:hover { 
-  background-color: orange;
+  @apply bg-primary-300 text-black
+}
+
+.top_message {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.side_menu_toggler {
+  display: none;
 }
 
 /* FORM_CONTAINER */
@@ -56,10 +90,16 @@ svg {
 .form_input {
 padding: .4rem .7rem;
 width: 100%;
-background-color: rgb(183, 219, 243) !important;
+box-shadow: 0 0 2px rgba(15, 61, 99, 0.6);
+font-weight: 300;
 }
 
-.form_input:focus {
+select {
+  padding: .4rem .7rem;
+  box-shadow: 0 0 2px rgba(15, 61, 99, 0.6);
+}
+
+.form_input:focus, select:focus {
   outline-color: rgb(57, 163, 233);
 }
 
@@ -79,11 +119,8 @@ background-color: rgb(183, 219, 243) !important;
 
 /* USERS TABLE */
 td, th {
-  padding: .5rem 1rem;
-}
-
-tr {
-  box-shadow: 0px 5px 5px -5px rgba(0,0,0,0.5);
+  padding: .7rem 1rem;
+  white-space: nowrap;
 }
 
 /* LOADING SPINNER */
@@ -93,4 +130,21 @@ height: 100vh;
 display: flex;
 align-items: center;
 justify-content: center;
+}
+
+/* ALERTS */
+.alert {
+  width: 100%;
+  padding: .5rem 1rem;
+  display: block;
+  margin: .5rem 0px;
+}
+
+.alert-danger { background-color: red; color: white; }
+.alert-success { background-color: rgb(139, 196, 139); color: white; }
+.alert-info { background-color: rgb(43, 140, 231); color: white; }
+
+/* ACTIVE USER CLASS */
+.active_user {
+  @apply bg-primary-300
 }

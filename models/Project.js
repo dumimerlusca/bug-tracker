@@ -20,11 +20,7 @@ const ProjectSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  project_manager: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User'
-  },
-  developers: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
+  users: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 }, {
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
@@ -40,7 +36,6 @@ ProjectSchema.virtual('tickets', {
 
 // Cascade delete tickets when a project is deleted
 ProjectSchema.pre('remove', async function (next) {
-  console.log(this)
   await Ticket.deleteMany({ project: this._id });
   next();
 })

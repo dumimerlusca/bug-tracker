@@ -11,15 +11,32 @@ exports.getTickets = async (req, res, next) => {
   try {
     let query;
 
+    const reqQuery = { ...req.query };
+
+    const removeFields = ['select', 'sort', 'limit', 'page', 'user'];
+    removeFields.forEach(field => {
+      delete reqQuery[field];
+    })
+
+    // Find resource
     if (req.params.id) {
       query = Ticket.find({ project: req.params.id })
+    } else if (req.query.user) {
+      query = Ticket.find({
+        $or: [
+          { submitter: req.query.user },
+          { developer: req.query.user }
+        ]
+      })
     } else {
       query = Ticket.find()
     }
 
+
+
     query = query
-      .populate('developers')
-      .populate('createdBy')
+      .populate('developer')
+      .populate('submitter')
       .populate({
         path: 'project',
         select: 'name description'
@@ -42,8 +59,8 @@ exports.getTickets = async (req, res, next) => {
 exports.getTicket = async (req, res, next) => {
   try {
     const ticket = await Ticket.findById(req.params.id)
-      .populate('developers')
-      .populate('createdBy')
+      .populate('developer')
+      .populate('submitter')
       .populate({
         path: 'project',
         select: 'name description'
@@ -65,7 +82,7 @@ exports.getTicket = async (req, res, next) => {
 exports.addTicket = async (req, res, next) => {
   try {
     req.body.project = req.params.id;
-    req.body.createdBy = req.user.id;
+    req.body.submitter = req.user.id;
 
     const project = await Project.findById(req.body.project);
     if (!project) {
