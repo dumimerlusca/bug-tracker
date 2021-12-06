@@ -7,6 +7,7 @@ import { UsersProvider } from './context/users/UsersContext';
 import { ProjectsProvider } from './context/projects/ProjectsContext';
 import { TicketsProvider } from './context/tickets/TicketsContext'
 import { UiProvider } from './context/ui/UiContext';
+import { CommentsProvider } from './context/comments/commentsContext';
 
 
 ReactDOM.render(
@@ -17,7 +18,9 @@ ReactDOM.render(
           <UsersProvider>
             <ProjectsProvider>
               <TicketsProvider>
-                <App />
+                <CommentsProvider>
+                  <App />
+                </CommentsProvider>
               </TicketsProvider>
             </ProjectsProvider>
           </UsersProvider>

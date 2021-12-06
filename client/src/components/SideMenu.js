@@ -20,9 +20,9 @@ const SideMenu = () => {
   }, [])
 
   return (
-    <div className={`side_menu bg-primary-200 shadow-xl text-black ${isSideMenuVisible ? 'active' : null}`}>
+    <div className={`side_menu bg-primary-400 shadow-xl text-white ${isSideMenuVisible ? 'active' : null}`}>
       <div className="top_message w-full shadow-xl">
-        <h1 className="text-3xl text-center py-5 font-thin">
+        <h1 className="text-3xl text-center font-semibold py-5">
           Welcome  {user.name}!
         </h1>
       </div>

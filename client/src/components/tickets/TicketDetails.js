@@ -6,6 +6,9 @@ import EditTicketForm from './EditTicketForm';
 import useAuthContext from '../../context/auth/AuthContext';
 import useAlertContext from '../../context/alert/AlertContext';
 import { useNavigate } from 'react-router';
+import CommentsList from '../comments/CommentsList';
+import useCommentsContext from '../../context/comments/commentsContext';
+import formatDate from '../../utils/formatDate';
 
 const TicketDetails = () => {
   const [edit, setEdit] = useState(false);
@@ -19,6 +22,7 @@ const TicketDetails = () => {
     deleteTicket,
     clearAlerts,
     alert } = useTicketsContext();
+  const { getComments } = useCommentsContext();
   const { user } = useAuthContext();
   const { setAlert } = useAlertContext();
 
@@ -27,6 +31,7 @@ const TicketDetails = () => {
 
   const fetchData = async () => {
     await getTicket(id);
+    await getComments(id)
     setLoading(false)
   }
 
@@ -92,43 +97,54 @@ const TicketDetails = () => {
             >Delete</button>
           )}
         </div>
-        {edit ? <EditTicketForm ticket={currentTicket} /> : (
-          <div className="grid grid-cols-1 gap-5 shadow-xl rounded-md p-10
+        <div className="flex flex-col gap-10 md:gap-0 md:flex-row justify-between items-start">
+          <div className="w-full" style={{ flex: "2" }}>
+            {edit ? <EditTicketForm ticket={currentTicket} /> : (
+              <div className="grid grid-cols-1 gap-5 shadow-xl rounded-md p-10
           sm:grid-cols-2 bg-white">
-            <div>
-              <h2 className="text-xl font-semibold">Title</h2>
-              <p className="font-thin">{name}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Description</h2>
-              <p className="font-thin">{description}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Assigned developer</h2>
-              <p className="font-thin">{developer ? developer.name : '-'}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Submitter</h2>
-              <p className="font-thin">{submitter.name}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Project</h2>
-              <p className="font-thin">{project.name}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Ticket priority</h2>
-              <p className="font-thin">{priority}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Ticket status</h2>
-              <p className="font-thin">{status}</p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Created att</h2>
-              <p className="font-thin">{createdAt}</p>
-            </div>
+                <div>
+                  <h2 className="text-xl font-semibold">Title</h2>
+                  <p className="font-thin">{name}</p>
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold">Description</h2>
+                  <p className="font-thin">{description}</p>
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold">Assigned developer</h2>
+                  <p className="font-thin">{developer ? developer.name : '-'}</p>
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold">Submitter</h2>
+                  <p className="font-thin">{submitter.name}</p>
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold">Project</h2>
+                  <p className="font-thin">{project.name}</p>
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold">Ticket priority</h2>
+                  <p className="font-thin">{priority}</p>
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold">Ticket status</h2>
+                  <p className="font-thin">{status}</p>
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold">Created at</h2>
+                  <p className="font-thin">
+                    {formatDate(new Date(createdAt))}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+
+          <div className="flex-1 w-full px-5">
+            <CommentsList />
+          </div>
+        </div>
+
       </div>
     </div>
   )
