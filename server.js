@@ -23,12 +23,14 @@ const projects = require('./routes/projects');
 const tickets = require('./routes/tickets');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
+const comments = require('./routes/comments');
 
 // Mount routers
 app.use('/api/v1/projects', projects)
 app.use('/api/v1/tickets', tickets)
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/users', users)
+app.use('/api/v1/comments', comments)
 
 // Error handler
 app.use(errorHandler)
