@@ -4,7 +4,7 @@
 
 
 body {
-  @apply bg-primary-50
+  @apply bg-white
 }
 
 svg {
@@ -117,10 +117,18 @@ select {
   width: 100%;
 }
 
-/* USERS TABLE */
+/* TABLES */
 td, th {
   padding: .7rem 1rem;
   white-space: nowrap;
+}
+
+table {
+  @apply border-2 border-primary-900
+}
+
+tbody {
+  @apply bg-gray-200
 }
 
 /* LOADING SPINNER */

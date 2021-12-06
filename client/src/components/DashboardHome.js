@@ -1,36 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useUsersContext from '../context/users/UsersContext';
 import useProjectsContext from '../context/projects/ProjectsContext';
 import useTicketsContext from '../context/tickets/TicketsContext';
-import Loading from './Loading';
 import AllTickets from './tickets/AllTickets';
 
 const DashboardHome = () => {
-  const usersContext = useUsersContext();
-  const { users, getUsers } = usersContext;
-  const projectsContext = useProjectsContext();
-  const { projects, getProjects } = projectsContext;
-  const ticketsContext = useTicketsContext();
-  const { getTickets, tickets } = ticketsContext
+  const { users } = useUsersContext();
+  const { projects } = useProjectsContext();
+  const { tickets } = useTicketsContext();
 
-  useEffect(() => {
-    if (!users) {
-      getUsers()
-    }
-
-    if (!projects) {
-      getProjects()
-    }
-
-    if (!tickets) {
-      getTickets();
-    }
-    // eslint-disable-next-line
-  }, [])
-
-  if (usersContext.loading || projectsContext.loading || ticketsContext.loading) {
-    return <Loading />
-  }
 
   return (
     <div>
@@ -88,9 +66,7 @@ const DashboardHome = () => {
         <h1 className="text-xl inline-block p-2 my-10  border-b border-solid border-gray-500">All tickets</h1>
       </div>
 
-      {tickets && (
-        <AllTickets />
-      )}
+      <AllTickets />
     </div>
   )
 }

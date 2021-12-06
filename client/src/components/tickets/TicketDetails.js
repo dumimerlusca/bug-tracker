@@ -10,15 +10,26 @@ import { useNavigate } from 'react-router';
 
 const TicketDetails = () => {
   const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const { currentTicket, loading, getTicket, getTickets, getMyTickets, deleteTicket, clearAlerts, alert } = useTicketsContext();
+  const {
+    currentTicket,
+    getTicket,
+    getTickets,
+    getMyTickets,
+    deleteTicket,
+    clearAlerts,
+    alert } = useTicketsContext();
   const { user } = useAuthContext();
   const { setAlert } = useAlertContext();
 
   const { id } = useParams();
   const navigate = useNavigate();
-  useEffect(() => {
-    getTicket(id)
+
+  useEffect(async () => {
+    await getTicket(id);
+    setLoading(false)
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -29,11 +40,9 @@ const TicketDetails = () => {
   }, [alert])
 
   if (loading) {
-    return <Loading />
-  }
-
-  if (!currentTicket && !loading) {
-    return <h1>Ticket not found</h1>
+    return <div className="flex items-center justify-center w-full h-screen">
+      <Loading />
+    </div>
   }
 
   const {

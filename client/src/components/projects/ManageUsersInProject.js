@@ -8,12 +8,25 @@ import Alert from '../Alert';
 
 
 const ManageUsersInProject = () => {
-  const { getProject, loading: projectLoading, currentProject, updateProject, alert: projectAlert, clearAlerts: clearProjectAlerts } = useProjectsContext();
-  const { users, loading: usersLoading, getUsers, alert: usersAlert, clearAlerts: clearUsersAlerts } = useUsersContext();
+  const {
+    currentProject,
+    updateProject,
+    alert,
+    clearAlerts
+  } = useProjectsContext();
+  const { users } = useUsersContext();
   const { id } = useParams();
   const { setAlert } = useAlertContext();
 
-  const [newUsers, setNewUsers] = useState([])
+  const [loading, setLoading] = useState(false);
+  const [newUsers, setNewUsers] = useState([...currentProject.users])
+
+  useEffect(() => {
+    if (alert) {
+      setAlert(alert);
+      clearAlerts();
+    }
+  }, [alert])
 
   const addUserToProject = (user) => {
     // Check if user is already in array
@@ -32,8 +45,9 @@ const ManageUsersInProject = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     await updateProject(id, { users: newUsers });
-    getUsers();
+    setLoading(false);
   }
 
   const resetState = (e) => {
@@ -42,45 +56,10 @@ const ManageUsersInProject = () => {
     setAlert({ message: 'Users reset success!', type: 'info' })
   }
 
-  useEffect(() => {
-    if (!currentProject) {
-      getProject(id)
-    }
-    if (!users) {
-      getUsers();
-    }
-
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (currentProject) {
-      setNewUsers([...currentProject.users])
-    }
-
-    // eslint-disable-next-line
-  }, [currentProject])
-
-  useEffect(() => {
-    if (projectAlert) {
-      setAlert(projectAlert)
-      clearProjectAlerts();
-    }
-    if (usersAlert) {
-      setAlert(usersAlert)
-      clearUsersAlerts();
-    }
-  }, [projectAlert, usersAlert])
-
-
-  if (projectLoading || usersLoading) {
+  if (loading) {
     return <div className="w-full h-screen flex justify-center items-center">
       <Loading />
     </div>
-  }
-
-  if (!currentProject && !projectLoading) {
-    return <p>Project not found</p>
   }
 
   return (
@@ -97,9 +76,9 @@ const ManageUsersInProject = () => {
         <div className="flex flex-col shadow-sm gap-5">
           <div className="flex-1">
             <h1 className="text-xl">Users in project</h1>
-            <table className="w-full text-left mt-5 shadow-md bg-yellow-50">
+            <table className="w-full text-left shadow-md" style={{ minWidth: '700px' }}>
               <thead className="table table-fixed">
-                <tr className="w-full table table-fixed shadow-lg">
+                <tr className="w-full table table-fixed bg-gray-200 border-b-2 border-gray-800 border-opacity-50">
                   <th>Name</th>
                   <th>Email</th>
                   <th>Role</th>
@@ -114,7 +93,7 @@ const ManageUsersInProject = () => {
                   return (
                     <tr key={_id}
                       onClick={(e) => { removeUserFromProject(_id) }}
-                      className="w-full table table-fixed cursor-pointer"
+                      className="w-full table table-fixed border-b border-gray-400 border-opacity-25 cursor-pointer bg-primary-200"
                     >
                       <td>{name}</td>
                       <td>{email}</td>
@@ -131,7 +110,7 @@ const ManageUsersInProject = () => {
             <h3>Select new users for the project</h3>
             <table className="w-full text-left mt-5 shadow-md">
               <thead className="table table-fixed">
-                <tr className="w-full table table-fixed shadow-lg">
+                <tr className="w-full table table-fixed bg-gray-200 border-b-2 border-gray-800 border-opacity-50">
                   <th>Name</th>
                   <th>Email</th>
                   <th>Role</th>
@@ -146,7 +125,7 @@ const ManageUsersInProject = () => {
                   return (
                     <tr key={_id}
                       onClick={(e) => { addUserToProject(user) }}
-                      className="w-full table table-fixed cursor-pointer"
+                      className="w-full table table-fixed border-b border-gray-400 border-opacity-25 cursor-pointer"
                     >
                       <td>{name}</td>
                       <td>{email}</td>

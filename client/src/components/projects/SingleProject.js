@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useProjectsContext from '../../context/projects/ProjectsContext';
 import useAuthContext from '../../context/auth/AuthContext';
 import { useParams } from 'react-router-dom';
@@ -13,9 +13,9 @@ import useTicketsContext from '../../context/tickets/TicketsContext';
 
 
 const SingleProject = () => {
+  const [loading, setLoading] = useState(true);
   const {
     getProject,
-    loading,
     currentProject,
     deleteProject,
     getProjects
@@ -23,14 +23,11 @@ const SingleProject = () => {
   const { getTickets } = useTicketsContext();
   const { user } = useAuthContext();
   const { id } = useParams();
-
-
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!currentProject) {
-      getProject(id)
-    }
+  useEffect(async () => {
+    await getProject(id)
+    setLoading(false)
   }, [])
 
   const handleDeleteProject = async () => {
@@ -47,14 +44,10 @@ const SingleProject = () => {
     navigate(`/dashboard/projects/${id}/edit`)
   }
 
-  if (!currentProject && loading) {
+  if (loading) {
     return <div className="w-full h-screen flex justify-center items-center">
       <Loading />
     </div>
-  }
-
-  if (!currentProject && !loading) {
-    return <p>Project not found</p>
   }
 
   const {

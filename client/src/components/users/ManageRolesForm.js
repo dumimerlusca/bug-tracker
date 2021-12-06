@@ -3,12 +3,19 @@ import useUsersContext from '../../context/users/UsersContext';
 import useAlertContext from '../../context/alert/AlertContext';
 import Alert from '../Alert';
 import Loading from '../Loading';
+import UsersTable from './UsersTable';
 
 const ManageRolesForm = () => {
   const [selectedUser, setSelectedUser] = useState('');
   const [selectedRole, setSelectedRole] = useState('submitter');
 
-  const { users, loading, updateUser, alert, clearAlerts } = useUsersContext();
+  const {
+    users,
+    loading,
+    updateUser,
+    getUsers,
+    alert,
+    clearAlerts } = useUsersContext();
   const { setAlert } = useAlertContext();
 
   const usersList = useRef(null);
@@ -32,13 +39,14 @@ const ManageRolesForm = () => {
     // eslint-disable-next-line
   }, [alert])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (selectedUser === '' || selectedRole === '') {
       setAlert({ message: "Please select user and role", type: 'danger' });
       return
     }
-    updateUser(selectedUser, { role: selectedRole })
+    await updateUser(selectedUser, { role: selectedRole })
+    getUsers();
     setSelectedRole('');
     setSelectedUser('submitter');
   }
@@ -66,33 +74,7 @@ const ManageRolesForm = () => {
         <h3 className="text-lg">Select 1 or more users</h3>
         <Alert />
         <div className="overflow-x-auto w-full shadow-2xl">
-          <table className="w-full text-left shadow-md" style={{ minWidth: '700px' }}>
-            <thead className="table table-fixed">
-              <tr className="w-full table table-fixed bg-gray-200 border-b-2 border-gray-800 border-opacity-50">
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-              </tr>
-            </thead>
-            <tbody ref={usersList}
-              className="block overflow-auto table-fixed"
-              style={{ maxHeight: '300px' }}
-            >
-              {users && users.map(user => {
-                const { name, _id, email, role } = user;
-                return (
-                  <tr key={_id}
-                    onClick={(e) => { handleClick(e, _id) }}
-                    className="w-full table table-fixed border-b border-gray-400 border-opacity-25 cursor-pointer"
-                  >
-                    <td>{name}</td>
-                    <td>{email}</td>
-                    <td>{role}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <UsersTable users={users} handleClick={handleClick} usersList={usersList} />
         </div>
       </div>
 

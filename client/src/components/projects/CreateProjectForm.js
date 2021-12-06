@@ -7,11 +7,17 @@ import useAuthContext from '../../context/auth/AuthContext';
 import Alert from '../Alert';
 
 const CreateProjectForm = () => {
-  const { users, getUsers, loading } = useUsersContext();
-  const projectContext = useProjectsContext();
+  const { users } = useUsersContext();
   const { user } = useAuthContext();
-  const { createProject, getProjects, getMyProjects } = projectContext;
+  const {
+    createProject,
+    getProjects,
+    getMyProjects,
+    loading,
+    alert,
+    clearAlerts } = useProjectsContext();
   const { setAlert } = useAlertContext();
+
   const [project, setProject] = useState({
     name: '',
     description: '',
@@ -19,21 +25,13 @@ const CreateProjectForm = () => {
   });
 
   useEffect(() => {
-    if (!users) {
-      getUsers();
+    if (alert) {
+      setAlert(alert)
+      clearAlerts();
     }
 
     // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (projectContext.alert) {
-      setAlert(projectContext.alert)
-      projectContext.clearAlerts();
-    }
-
-    // eslint-disable-next-line
-  }, [projectContext.alert])
+  }, [alert])
 
   const handleOnChange = (e) => {
     setProject({ ...project, [e.target.id]: e.target.value })
@@ -59,12 +57,12 @@ const CreateProjectForm = () => {
       setAlert({ message: 'Please enter name and description', type: 'danger' });
       return
     }
-    createProject({ ...project, users: project.users.map(user => user._id) });
+    await createProject({ ...project, users: project.users.map(user => user._id) });
     getProjects()
     getMyProjects(user._id)
   }
 
-  if (loading || projectContext.loading) {
+  if (loading) {
     return <div className="w-full h-screen flex items-center justify-center">
       <Loading />
     </div>

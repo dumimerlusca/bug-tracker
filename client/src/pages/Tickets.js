@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MyTickets from '../components/tickets/MyTickets';
 import TicketDetails from '../components/tickets/TicketDetails';

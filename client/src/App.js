@@ -11,6 +11,7 @@ import Tickets from "./pages/Tickets";
 import ManageRoles from './pages/ManageRoles';
 import AdminOnly from './components/routing/AdminOnly';
 import Home from './pages/Home';
+import DashboardHome from './components/DashboardHome';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<Home />} />
         <Route path="/dashboard/*" element={<PrivateRoute> <Dashboard /> </PrivateRoute>} >
+          <Route path="" element={<DashboardHome />} />
           <Route path="projects/*" element={<Projects />} />
           <Route path="manageRoles/*" element={<AdminOnly> <ManageRoles /> </AdminOnly>} />
           <Route path="tickets/*" element={<Tickets />} />
