@@ -4,10 +4,16 @@ import { useParams } from 'react-router';
 import Alert from '../Alert';
 import useAlertContext from '../../context/alert/AlertContext';
 import useProjectsContext from '../../context/projects/ProjectsContext';
+import useAuthContext from '../../context/auth/AuthContext';
 
 const AddTicketForm = () => {
-  const { addTicket, alert } = useTicketsContext();
+  const {
+    addTicket,
+    alert,
+    getTickets,
+    getMyTickets } = useTicketsContext();
   const { getProject } = useProjectsContext();
+  const { user } = useAuthContext();
   const { setAlert } = useAlertContext();
   const { id: projectId } = useParams();
 
@@ -34,6 +40,8 @@ const AddTicketForm = () => {
     }
     await addTicket(projectId, ticket)
     getProject(projectId)
+    getTickets();
+    getMyTickets(user._id)
   }
 
   const handleOnChange = (e) => {
@@ -41,9 +49,9 @@ const AddTicketForm = () => {
   }
 
   return (
-    <form className="mt-10"
+    <form className="mt-7"
       onSubmit={(e) => { handleSubmit(e) }}>
-      <h1>Create new ticket</h1>
+      <h1 className="text-xl p-4">Create new ticket</h1>
       <Alert />
       <div>
         <label htmlFor="name" className="form_label">Title</label>
@@ -78,7 +86,7 @@ const AddTicketForm = () => {
         </select>
       </div>
       <input type="submit"
-        className="py-2 px-10 bg-green-400 rounded hover:opacity-75 m-5"
+        className="py-2 px-10 bg-secondary-500 text-white rounded hover:opacity-75 m-5"
         value="Submit" />
     </form>
   )

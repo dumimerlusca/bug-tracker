@@ -25,9 +25,14 @@ const SingleProject = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  useEffect(async () => {
+  const fetchData = async () => {
     await getProject(id)
     setLoading(false)
+  }
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line
   }, [])
 
   const handleDeleteProject = async () => {
@@ -76,17 +81,21 @@ const SingleProject = () => {
       </div>
 
       <div className="flex gap-3 mt-2">
-        <button className="py-2 px-7 bg-green-200"
-          onClick={handleEditProject}
-        >Edit</button>
+        {(user.role === 'admin' || user.role === 'project manager') && (
+          <button className="py-2 px-7 bg-green-600 text-white"
+            onClick={handleEditProject}
+          >Edit</button>
+        )}
         {user.role === 'admin' && (
-          <button className="py-2 px-7 bg-red-200"
+          <button className="py-2 px-7 bg-red-600 text-white"
             onClick={handleDeleteProject}
           >Delete</button>
         )}
-        <Link to={`/dashboard/projects/${_id}/manageUsers`} className="py-2 px-7 bg-red-200"
-        >Manage users</Link>
-        <Link to={`/dashboard/projects/${_id}/addTicket`} className="py-2 inline-block px-4 bg-blue-200 hover:opacity-75">Add new ticket</Link>
+        {(user.role === 'admin' || user.role === 'project manager') && (
+          <Link to={`/dashboard/projects/${_id}/manageUsers`} className="py-2 px-7 bg-blue-500 text-white"
+          >Manage users</Link>
+        )}
+        <Link to={`/dashboard/projects/${_id}/addTicket`} className="py-2 inline-block px-4 bg-gray-800 text-white hover:opacity-75">Add new ticket</Link>
       </div>
 
 

@@ -5,7 +5,6 @@ import Loading from '../Loading';
 import EditTicketForm from './EditTicketForm';
 import useAuthContext from '../../context/auth/AuthContext';
 import useAlertContext from '../../context/alert/AlertContext';
-import Alert from '../Alert';
 import { useNavigate } from 'react-router';
 
 const TicketDetails = () => {
@@ -26,9 +25,13 @@ const TicketDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  useEffect(async () => {
+  const fetchData = async () => {
     await getTicket(id);
     setLoading(false)
+  }
+
+  useEffect(() => {
+    fetchData();
     // eslint-disable-next-line
   }, [])
 
@@ -52,13 +55,14 @@ const TicketDetails = () => {
     submitter,
     priority,
     status,
-    type,
     developer,
     createdAt
+
   } = currentTicket;
 
-  const rolesThatCanEdit = ['admin', 'project manager', 'developer'];
-  const canEdit = (rolesThatCanEdit.includes(user.role) || submitter._id === user._id) ? true : false;
+  const rolesThatCanEdit = ['admin', 'project manager'];
+  const canEdit = (rolesThatCanEdit.includes(user.role) || submitter._id === user._id || developer._id === user._id) ? true : false;
+  const canDelete = (rolesThatCanEdit.includes(user.role) || submitter._id === user.id) ? true : false;
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure?')) {
@@ -76,20 +80,21 @@ const TicketDetails = () => {
           onClick={() => { setEdit(false) }}
         >Details for ticket
         </button>
-        {canEdit && (
-          <div className='inline-flex gap-5'>
-            <button className='py-2 px-4 bg-blue-100 hover:opacity-75'
+        <div className='inline-flex gap-5'>
+          {canEdit && (
+            <button className='py-2 px-4 bg-green-500 text-white hover:opacity-75'
               onClick={() => { setEdit(true) }}
             >Edit</button>
+          )}
+          {canDelete && (
             <button className='py-2 px-4 bg-red-400 text-white hover:opacity-75'
               onClick={handleDelete}
             >Delete</button>
-          </div>
-
-        )}
+          )}
+        </div>
         {edit ? <EditTicketForm ticket={currentTicket} /> : (
           <div className="grid grid-cols-1 gap-5 shadow-xl rounded-md p-10
-          sm:grid-cols-2">
+          sm:grid-cols-2 bg-white">
             <div>
               <h2 className="text-xl font-semibold">Title</h2>
               <p className="font-thin">{name}</p>

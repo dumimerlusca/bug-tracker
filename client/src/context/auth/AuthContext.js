@@ -76,7 +76,7 @@ const AuthProvider = ({ children }) => {
       }
     }
     try {
-      const res = await axios.post('/auth/logout', config);
+      await axios.post('/auth/logout', config);
       dispatch({ type: LOGOUT })
     } catch (error) {
       dispatch({ type: AUTH_ERROR })

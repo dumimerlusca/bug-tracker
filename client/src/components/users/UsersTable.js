@@ -6,7 +6,7 @@ const UsersTable = ({ users, handleClick, usersList }) => {
   return (
     <table className="w-full text-left shadow-md" style={{ minWidth: '700px' }}>
       <thead className="table table-fixed">
-        <tr className="w-full table table-fixed bg-primary-900 text-white border-b-2 border-gray-800 border-opacity-50">
+        <tr className="w-full table table-fixed bg-primary-500 text-white border-b-2 border-gray-800 border-opacity-50">
           <th>Name</th>
           <th>Email</th>
           <th>Role</th>

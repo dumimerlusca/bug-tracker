@@ -5,7 +5,7 @@ const ProjectsTable = ({ projects }) => {
   return (
     <table className="mx-auto text-left w-full">
       <thead className="w-full">
-        <tr className="bg-primary-900 text-white font-thin border-b-2 border-gray-800 border-opacity-50 w-full">
+        <tr className="bg-primary-500 text-white font-thin border-b-2 border-gray-800 border-opacity-50 w-full">
           <th>Project name</th>
           <th>Description</th>
           <th></th>

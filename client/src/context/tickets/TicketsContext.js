@@ -74,7 +74,6 @@ const TicketsProvider = ({ children }) => {
     }
     try {
       const res = await axios.post(`/projects/${project}/tickets`, ticket, config);
-      getTickets();
       dispatch({ type: ADD_TICKET_SUCCESS })
     } catch (error) {
       dispatch({ type: ADD_TICKET_FAIL, payload: error.response.data.error })

@@ -71,15 +71,15 @@ const ManageRolesForm = () => {
     <form className="w-full"
       onSubmit={(e) => { handleSubmit(e) }}>
       <div className="">
-        <h3 className="text-lg">Select 1 or more users</h3>
+        <h3 className="text-xl p-5">Select user</h3>
         <Alert />
         <div className="overflow-x-auto w-full shadow-2xl">
           <UsersTable users={users} handleClick={handleClick} usersList={usersList} />
         </div>
       </div>
 
-      <div className="mt-7">
-        <h3 className="text-lg">Select role</h3>
+      <div className="mt-3">
+        <h3 className="text-xl p-5">Select role</h3>
         <select name="selectedRole" id=""
           value={selectedRole}
           onChange={(e) => { handleOnChange(e) }}
@@ -90,7 +90,7 @@ const ManageRolesForm = () => {
           <option value="admin">Admin</option>
         </select>
       </div>
-      <input type="submit" className="py-2 px-10 bg-primary-700 text-white hover:opacity-75 mx-auto block mt-5 text-center" />
+      <input type="submit" className="py-2 px-10 bg-secondary-500 text-white hover:opacity-75 mx-auto block mt-5 text-center" />
     </form>
   )
 }

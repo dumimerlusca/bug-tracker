@@ -19,15 +19,18 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(async () => {
-    console.log('Use effect dashboard')
+  useEffect(() => {
+    fetchData();
+  }, [])
+
+  const fetchData = async () => {
     await getUsers();
     await getProjects();
     await getTickets();
     await getMyTickets(user._id);
     await getMyProjects(user._id);
     setLoading(false)
-  }, [])
+  }
 
   if (loading) {
     return <div className="flex items-center justify-center w-full h-screen">

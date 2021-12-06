@@ -16,7 +16,7 @@ router.route('/')
 
 router.route('/:id')
   .get(getTicket)
-  .put(protect, authorize(['developer', 'admin', 'project manager']), updateTicket)
-  .delete(protect, authorize(['project manager', 'admin']), deleteTicket)
+  .put(protect, authorize(['developer', 'admin', 'project manager', 'submitter']), updateTicket)
+  .delete(protect, authorize(['project manager', 'admin', 'developer', 'submitter']), deleteTicket)
 
 module.exports = router;

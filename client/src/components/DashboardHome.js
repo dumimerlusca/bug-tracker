@@ -13,7 +13,7 @@ const DashboardHome = () => {
   return (
     <div>
       <div className="flex gap-2 justify-evenly md:flex-row flex-col ">
-        <div className="flex p-3 flex-1 items-center justify-center text-center text-black shadow-lg bg-gray-200">
+        <div className="flex p-3 flex-1 items-center justify-center text-center text-black shadow-lg bg-primary-400">
           <span className="font-thin uppercase text-xl">
             Users:
           </span>
@@ -21,7 +21,7 @@ const DashboardHome = () => {
             {users && users.length}
           </span>
         </div>
-        <div className="flex p-3 flex-1 items-center justify-center text-center text-black bg-gray-200 shadow-lg">
+        <div className="flex p-3 flex-1 items-center justify-center text-center text-black bg-primary-300 shadow-lg">
           <span className="font-thin uppercase text-xl">
             Projects:
           </span>
@@ -29,7 +29,7 @@ const DashboardHome = () => {
             {projects && projects.length}
           </span>
         </div>
-        <div className="p-3 flex gap-10 flex-1 items-center justify-center text-center text-black bg-gray-200 shadow-lg">
+        <div className="p-3 flex gap-10 flex-1 items-center justify-center text-center text-black bg-primary-200 shadow-lg">
           <span className="font-thin uppercase text-xl">
             Tickets:
           </span>

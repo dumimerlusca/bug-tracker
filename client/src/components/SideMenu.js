@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MdDashboardCustomize } from 'react-icons/md'
-import { FaProjectDiagram, FaUserCog } from 'react-icons/fa'
+import { MdDashboardCustomize } from 'react-icons/md';
+import { FaProjectDiagram, FaUserCog, FaUsers } from 'react-icons/fa';
+import { AiOutlineProject } from 'react-icons/ai';
 import { GiTicket } from 'react-icons/gi';
 import Logout from './auth/Logout';
 import useAuthContext from '../context/auth/AuthContext';
@@ -15,12 +16,13 @@ const SideMenu = () => {
     if (window.innerWidth < 1280) {
       hideSideMenu()
     }
+    // eslint-disable-next-line
   }, [])
 
   return (
-    <div className={`side_menu bg-secondary-100 shadow-xl text-dark ${isSideMenuVisible ? 'active' : null}`}>
+    <div className={`side_menu bg-primary-200 shadow-xl text-black ${isSideMenuVisible ? 'active' : null}`}>
       <div className="top_message w-full shadow-xl">
-        <h1 className="text-3xl text-center py-5 bg-primary-200 font-thin">
+        <h1 className="text-3xl text-center py-5 font-thin">
           Welcome  {user.name}!
         </h1>
       </div>
@@ -31,7 +33,7 @@ const SideMenu = () => {
               className="side_menu_link"
               onClick={hideSideMenu}>
               <MdDashboardCustomize />
-              <span className="font-thin">
+              <span className="">
                 Dashboard Home
               </span>
             </Link>
@@ -42,8 +44,8 @@ const SideMenu = () => {
                 <Link to="/dashboard/manageRoles"
                   className="side_menu_link"
                   onClick={hideSideMenu}>
-                  <MdDashboardCustomize />
-                  <span className="font-thin">
+                  <FaUsers />
+                  <span className="">
                     Manage Role Assignment
                   </span>
                 </Link>
@@ -52,8 +54,8 @@ const SideMenu = () => {
                 <Link to="/dashboard/projects"
                   className="side_menu_link"
                   onClick={hideSideMenu}>
-                  <MdDashboardCustomize />
-                  <span className="font-thin">
+                  <AiOutlineProject />
+                  <span className="">
                     All Projects
                   </span>
                 </Link>
@@ -65,7 +67,7 @@ const SideMenu = () => {
               className="side_menu_link flex"
               onClick={hideSideMenu}>
               <FaProjectDiagram />
-              <span className="font-thin">
+              <span className="">
                 My Projects
               </span>
             </Link>
@@ -75,7 +77,7 @@ const SideMenu = () => {
               className="side_menu_link"
               onClick={hideSideMenu}>
               <GiTicket />
-              <span className="font-thin">
+              <span className="">
                 My Tickets
               </span>
             </Link>
@@ -84,8 +86,8 @@ const SideMenu = () => {
             <Link to="/dashboard/profile"
               className="side_menu_link"
               onClick={hideSideMenu}>
-              <FaProjectDiagram />
-              <span className="font-thin">
+              <FaUserCog />
+              <span className="">
                 User profile
               </span>
             </Link>

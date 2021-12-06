@@ -26,6 +26,7 @@ const ManageUsersInProject = () => {
       setAlert(alert);
       clearAlerts();
     }
+    // eslint-disable-next-line
   }, [alert])
 
   const addUserToProject = (user) => {
@@ -68,17 +69,17 @@ const ManageUsersInProject = () => {
       <div>
         <Alert />
         <div className="flex justify-center gap-5">
-          <input className="py-2 px-10 bg-yellow-400 mt-5 text-white" type="submit" value="Submit" />
-          <button className="py-2 px-10 bg-red-300 mt-5 text-white"
+          <input className="py-2 px-10 bg-secondary-500 mt-5 text-white" type="submit" value="Submit" />
+          <button className="py-2 px-10 bg-red-500 mt-5 text-white"
             onClick={(e) => { resetState(e) }}
           >Reset</button>
         </div>
         <div className="flex flex-col shadow-sm gap-5">
           <div className="flex-1">
-            <h1 className="text-xl">Users in project</h1>
+            <h1 className="text-xl p-5">Users in project</h1>
             <table className="w-full text-left shadow-md" style={{ minWidth: '700px' }}>
               <thead className="table table-fixed">
-                <tr className="w-full table table-fixed bg-gray-200 border-b-2 border-gray-800 border-opacity-50">
+                <tr className="w-full table table-fixed bg-secondary-500 text-white border-b-2 border-gray-800 border-opacity-50">
                   <th>Name</th>
                   <th>Email</th>
                   <th>Role</th>
@@ -93,7 +94,7 @@ const ManageUsersInProject = () => {
                   return (
                     <tr key={_id}
                       onClick={(e) => { removeUserFromProject(_id) }}
-                      className="w-full table table-fixed border-b border-gray-400 border-opacity-25 cursor-pointer bg-primary-200"
+                      className="w-full table table-fixed border-b border-gray-400 border-opacity-25 cursor-pointer"
                     >
                       <td>{name}</td>
                       <td>{email}</td>
@@ -106,11 +107,11 @@ const ManageUsersInProject = () => {
           </div>
 
           <div>
-            <h1 className="text-xl">All users</h1>
-            <h3>Select new users for the project</h3>
+            <h1 className="text-xl p-3 pl-5">All users</h1>
+            <h3 className="p-2">Select new users for the project</h3>
             <table className="w-full text-left mt-5 shadow-md">
               <thead className="table table-fixed">
-                <tr className="w-full table table-fixed bg-gray-200 border-b-2 border-gray-800 border-opacity-50">
+                <tr className="w-full table table-fixed bg-primary-500 text-white border-b-2 border-gray-800 border-opacity-50">
                   <th>Name</th>
                   <th>Email</th>
                   <th>Role</th>

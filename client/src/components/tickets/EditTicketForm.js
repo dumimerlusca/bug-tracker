@@ -22,6 +22,7 @@ const EditTicketForm = ({ ticket }) => {
     if (alert) {
       setAlert(alert)
     }
+    // eslint-disable-next-line
   }, [alert])
 
   const handleOnChange = (e) => {

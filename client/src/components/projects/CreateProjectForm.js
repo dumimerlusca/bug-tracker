@@ -100,7 +100,7 @@ const CreateProjectForm = () => {
               <div className="overflow-x-auto w-full shadow-2xl">
                 <table className="w-full text-left mt-5 shadow-md">
                   <thead className="table table-fixed">
-                    <tr className="w-full table table-fixed bg-gray-200 font-thin border-b-2 border-gray-800 border-opacity-50">
+                    <tr className="w-full table table-fixed bg-primary-500 text-white font-thin border-b-2 border-gray-800 border-opacity-50">
                       <th>Name</th>
                       <th>Role</th>
                     </tr>
@@ -129,7 +129,7 @@ const CreateProjectForm = () => {
               <div className="overflow-x-auto w-full shadow-2xl">
                 <table className="w-full text-left mt-5 shadow-md">
                   <thead className="table table-fixed">
-                    <tr className="w-full table table-fixed bg-gray-200 font-thin border-b-2 border-gray-800 border-opacity-50">
+                    <tr className="w-full table table-fixed bg-secondary-500 text-white font-thin border-b-2 border-gray-800 border-opacity-50">
                       <th>Name</th>
                       <th>Role</th>
                     </tr>
@@ -155,7 +155,7 @@ const CreateProjectForm = () => {
           </div>
         </div>
 
-        <input className="py-2 px-10 bg-yellow-400 mt-5 mx-auto block text-white" type="submit" value="Submit" />
+        <input className="py-2 px-10 bg-secondary-400 mt-5 mx-auto block text-white" type="submit" value="Submit" />
       </form>
     </div>
   )

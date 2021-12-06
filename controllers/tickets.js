@@ -102,13 +102,31 @@ exports.addTicket = async (req, res, next) => {
 // @acces  Private
 exports.updateTicket = async (req, res, next) => {
   try {
-    const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    })
+    const ticket = await Ticket.findById(req.params.id)
 
     if (!ticket) {
       return next(new ErrorResponse(`Ticket with id ${req.params.id} not found`, 404))
+    }
+
+    // Authorize user
+    if (ticket.developer) {
+      if (req.user.id === ticket.developer.toString() || req.user.role === 'admin' || req.user.role === 'project manager') {
+        await Ticket.findByIdAndUpdate(req.params.id, req.body, {
+          new: true,
+          runValidators: true
+        });
+      } else {
+        return next(new ErrorResponse('Unauthorized to delete this ticket', 401))
+      }
+    } else {
+      if (req.user.role === 'admin' || req.user.role === 'project manager') {
+        await Ticket.findByIdAndUpdate(req.params.id, req.body, {
+          new: true,
+          runValidators: true
+        });
+      } else {
+        return next(new ErrorResponse('Unauthorized to delete this ticket', 401))
+      }
     }
 
     res.status(200).json({ success: true, data: ticket })
@@ -122,10 +140,16 @@ exports.updateTicket = async (req, res, next) => {
 // @acces  Private
 exports.deleteTicket = async (req, res, next) => {
   try {
-    const ticket = await Ticket.findByIdAndRemove(req.params.id)
+    const ticket = await Ticket.findById(req.params.id)
 
     if (!ticket) {
       return next(new ErrorResponse(`Ticket with id ${req.params.id} not found`, 404))
+    }
+
+    if (req.user.id === ticket.submitter.toString() || req.user.role === 'admin' || req.user.role === 'project manager') {
+      await ticket.remove();
+    } else {
+      return next(new ErrorResponse('Unauthorized to delete this ticket', 401))
     }
 
     res.status(200).json({ success: true, data: {} })

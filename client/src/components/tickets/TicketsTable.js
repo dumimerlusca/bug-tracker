@@ -5,9 +5,9 @@ import PropTypes from 'prop-types'
 
 const TicketsTable = ({ tickets, showProject }) => {
   return (
-    <table className="rounded border shadow-md w-full">
+    <table className="rounded shadow-md w-full">
       <thead>
-        <tr className="bg-primary-900 text-white font-thin border-b-2 border-gray-800 border-opacity-50">
+        <tr className="bg-primary-500 text-white font-thin border-b-2 border-gray-800 border-opacity-50">
           <th>Submitter</th>
           <th>Description</th>
           <th> {showProject ? 'Project' : ''} </th>

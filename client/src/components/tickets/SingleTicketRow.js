@@ -10,7 +10,6 @@ const SingleTicketRow = ({ ticket }) => {
     createdAt,
     priority,
     status,
-    type,
     developer,
     project,
     _id
@@ -24,7 +23,7 @@ const SingleTicketRow = ({ ticket }) => {
 
   return (
     <tr className={`border-b border-gray-400 border-opacity-25 cursor-pointer
-    ${developer && (user._id === developer._id) ? 'bg-blue-200' : null}
+    ${developer && (user._id === developer._id) ? 'bg-secondary-300' : null}
     `}
       onClick={handleOnClick}
     >

@@ -60,7 +60,7 @@ const EditProject = () => {
             onChange={(e) => { handleOnChange(e) }}
           />
         </div>
-        <input type="submit" className="m-10 py-2 px-5 bg-yellow-300 hover:opacity-75" value="Submit changes" />
+        <input type="submit" className="m-10 py-2 px-5 bg-secondary-500 text-white hover:opacity-75" value="Submit changes" />
       </form>
     </div>
   )
