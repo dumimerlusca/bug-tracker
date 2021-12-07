@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import useCommentsContext from '../../context/comments/commentsContext';
 import { useParams } from 'react-router';
 import useAlertContext from '../../context/alert/AlertContext';
@@ -7,33 +7,28 @@ import useAlertContext from '../../context/alert/AlertContext';
 const AddCommentForm = ({ setIsFormVisible }) => {
   const {
     addComment,
-    getComments,
-    alert,
-    clearAlerts
+    getComments
   } = useCommentsContext();
-  const [comment, setComment] = useState({
-    title: '',
-    body: ''
-  })
+  const [comment, setComment] = useState('')
+
   const { title, body } = comment;
   const { setAlert } = useAlertContext();
 
   const { id: ticketId } = useParams();
 
-
   const handleOnChange = (e) => {
-    setComment({ ...comment, [e.target.name]: e.target.value })
+    setComment(e.target.value)
   }
 
   const AddCommentAndFetchData = async () => {
-    await addComment(ticketId, comment);
+    await addComment(ticketId, { body: comment });
     getComments(ticketId)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title.trim() === '' || body.trim() === '') {
-      return setAlert({ message: "Please enter title and comment", type: 'danger' })
+    if (comment.trim() === '') {
+      return setAlert({ message: "Please add comment", type: 'danger' })
     }
     AddCommentAndFetchData();
     setIsFormVisible(false)
@@ -43,16 +38,6 @@ const AddCommentForm = ({ setIsFormVisible }) => {
     <form className=""
       onSubmit={(e) => { handleSubmit(e) }}
     >
-      <div>
-        <label htmlFor="title" className="form_label">Title</label>
-        <input type="text"
-          id="title"
-          name="title"
-          value={title}
-          placeholder="Title"
-          onChange={(e) => { handleOnChange(e) }}
-          className="form_input" />
-      </div>
       <div>
         <label htmlFor="body" className="form_label">Comment</label>
         <textarea className="form_input"

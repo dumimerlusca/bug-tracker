@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Comment = require('./Comment');
 
 const TicketSchema = new mongoose.Schema({
   name: {
@@ -42,6 +43,10 @@ const TicketSchema = new mongoose.Schema({
     type: Date,
     default: Date.now()
   }
+})
+
+TicketSchema.pre('remove', async function () {
+  await Comment.deleteMany({ ticket: this._id })
 })
 
 module.exports = mongoose.model('Ticket', TicketSchema);

@@ -81,7 +81,7 @@ const TicketDetails = () => {
   return (
     <div>
       <div>
-        <button className="inline-block m-5 text-2xl py-2 px-5 font-thin"
+        <button className="inline-block m-5 text-2xl px-5 font-thin"
           onClick={() => { setEdit(false) }}
         >Details for ticket
         </button>
@@ -97,11 +97,11 @@ const TicketDetails = () => {
             >Delete</button>
           )}
         </div>
-        <div className="flex flex-col gap-10 md:gap-0 md:flex-row justify-between items-start">
-          <div className="w-full" style={{ flex: "2" }}>
-            {edit ? <EditTicketForm ticket={currentTicket} /> : (
+        <div className="w-full">
+          {edit ? <EditTicketForm ticket={currentTicket} /> : (
+            <div className="flex flex-col gap-10 md:gap-0 md:flex-row justify-between items-start">
               <div className="grid grid-cols-1 gap-5 shadow-xl rounded-md p-10
-          sm:grid-cols-2 bg-white">
+          sm:grid-cols-2 bg-white" style={{ flex: "2" }}>
                 <div>
                   <h2 className="text-xl font-semibold">Title</h2>
                   <p className="font-thin">{name}</p>
@@ -137,13 +137,13 @@ const TicketDetails = () => {
                   </p>
                 </div>
               </div>
-            )}
-          </div>
-
-          <div className="flex-1 w-full px-5">
-            <CommentsList />
-          </div>
+              <div className="flex-1 w-full px-5">
+                <CommentsList />
+              </div>
+            </div>
+          )}
         </div>
+
 
       </div>
     </div>

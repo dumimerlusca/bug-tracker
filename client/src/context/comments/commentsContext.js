@@ -6,6 +6,10 @@ import {
   GET_COMMENTS_FAIL,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAIL,
+  DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_FAIL,
+  UPDATE_COMMENT_SUCCESS,
+  UPDATE_COMMENT_FAIL,
   CLEAR_ALERTS,
   SET_LOADING
 } from '../types'
@@ -47,6 +51,31 @@ const CommentsProvider = ({ children }) => {
     }
   }
 
+  // Delete comment
+  const deleteComment = async (id) => {
+    try {
+      await axios.delete(`/comments/${id}`)
+      dispatch({ type: DELETE_COMMENT_SUCCESS })
+    } catch (error) {
+      dispatch({ type: DELETE_COMMENT_FAIL, payload: error.response.data.error })
+    }
+  }
+
+  // Update comment
+  const updateComment = async (id, data) => {
+    const config = {
+      headers: {
+        'Content-type': 'application/json'
+      }
+    }
+    try {
+      await axios.put(`/tickets/${id}`, data, config)
+      dispatch({ type: UPDATE_COMMENT_SUCCESS })
+    } catch (error) {
+      dispatch({ type: UPDATE_COMMENT_FAIL })
+    }
+  }
+
   // Clear alerts
   const clearAlerts = () => {
     dispatch({ type: CLEAR_ALERTS })
@@ -63,6 +92,8 @@ const CommentsProvider = ({ children }) => {
     ...state,
     getComments,
     addComment,
+    deleteComment,
+    updateComment,
     clearAlerts
   }}>
     {children}

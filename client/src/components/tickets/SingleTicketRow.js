@@ -23,14 +23,19 @@ const SingleTicketRow = ({ ticket }) => {
 
   return (
     <tr className={`border-b border-gray-400 border-opacity-25 cursor-pointer
-    ${developer && (user._id === developer._id) ? 'bg-secondary-300' : null}
+    ${developer && (user._id === developer._id) ? 'bg-secondary-100' : null}
     `}
       onClick={handleOnClick}
     >
       <td>{submitter.name}</td>
       <td>
         <div>
-          <span className="py-0 px-2 rounded-md bg-blue-100 font-thin text-sm">
+          <span className={`py-0 px-2 rounded-xl border-2 bg-white shadow-md font-bold text-sm
+            ${status === 'submitted' ? 'text-black' : null}
+            ${status === 'in progress' ? 'text-yellow-500' : null}
+            ${status === 'in review' ? 'text-blue-700' : null}
+            ${status === 'done' ? 'text-blue-300' : null}
+          `}>
             {status}
           </span>
           <span className="ml-3 text-md font-semibold">
