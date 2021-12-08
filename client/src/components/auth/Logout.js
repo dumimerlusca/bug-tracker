@@ -16,7 +16,7 @@ const Logout = () => {
   }
 
   return (
-    <button className="btn btn-light"
+    <button className="py-1 px-10 hover:opacity-75 mt-5 transition-all mx-auto block bg-primary-600 rounded"
       onClick={onClick}>
       Logout
     </button>

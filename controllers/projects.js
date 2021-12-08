@@ -35,26 +35,12 @@ exports.getProjects = async (req, res, next) => {
     } else {
       // Finding all projects
       query = Project.find(JSON.parse(queryStr))
-        .populate({
-          path: 'tickets',
-          model: 'Ticket',
-          populate: [{
-            path: 'submitter',
-            model: 'User'
-          },
-          {
-            path: 'developer',
-            model: 'User'
-          }
-          ]
-        })
-        .populate('users')
-        .populate('createdBy')
     }
 
 
     // Select fields
     if (req.query.select) {
+      console.log("Select")
       const fields = req.query.select.split(',').join(' ');
       query = query.select(fields);
     }
@@ -74,7 +60,26 @@ exports.getProjects = async (req, res, next) => {
     query = query.skip(startIndex).limit(limit);
     const total = await Project.countDocuments();
 
+    // Populate
+    query = query
+      .populate({
+        path: 'tickets',
+        model: 'Ticket',
+        populate: [{
+          path: 'submitter',
+          model: 'User'
+        },
+        {
+          path: 'developer',
+          model: 'User'
+        }
+        ]
+      })
+      .populate('users')
+      .populate('createdBy')
+
     const projects = await query;
+
     res.status(200).json({
       success: true,
       count: projects.length,

@@ -69,7 +69,7 @@ const CommentsProvider = ({ children }) => {
       }
     }
     try {
-      await axios.put(`/tickets/${id}`, data, config)
+      await axios.put(`/comments/${id}`, data, config)
       dispatch({ type: UPDATE_COMMENT_SUCCESS })
     } catch (error) {
       dispatch({ type: UPDATE_COMMENT_FAIL })

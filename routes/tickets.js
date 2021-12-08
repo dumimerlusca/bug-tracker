@@ -10,6 +10,7 @@ const { protect, authorize, } = require('../middleware/auth')
 
 const router = express.Router({ mergeParams: true });
 
+
 // Re-route to other resource router
 const commentsRouter = require('./comments');
 router.use('/:id/comments', commentsRouter)

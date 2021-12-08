@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Ticket = require('../models/Ticket');
 const Project = require('../models/Project');
 const ErrorResponse = require('../utils/errorResponse');
+const advancedResults = require('../utils/advancedResults')
 
 // @desc   Get all tickets
 // @route  GET /api/v1/tickets
@@ -9,10 +10,9 @@ const ErrorResponse = require('../utils/errorResponse');
 // @acces  Public
 exports.getTickets = async (req, res, next) => {
   try {
-    let query;
-
     const reqQuery = { ...req.query };
 
+    // Fields to remove
     const removeFields = ['select', 'sort', 'limit', 'page', 'user'];
     removeFields.forEach(field => {
       delete reqQuery[field];
@@ -29,11 +29,10 @@ exports.getTickets = async (req, res, next) => {
         ]
       })
     } else {
-      query = Ticket.find()
+      query = Ticket.find(reqQuery)
     }
 
-
-
+    // Populate
     query = query
       .populate('developer')
       .populate('submitter')
@@ -42,10 +41,23 @@ exports.getTickets = async (req, res, next) => {
         select: 'name description'
       });
 
+    // Select, sort, pagination
+    const advancedQuery = advancedResults(query, req.query);
+
+    query = advancedQuery.query;
+
     const tickets = await query;
+
+    const total = await Ticket.countDocuments()
+    const totalPages = Math.ceil(total / advancedQuery.limit)
+
     res.status(201).json({
       success: true,
+      page: advancedQuery.page,
+      limit: advancedQuery.limit,
       count: tickets.length,
+      total,
+      totalPages,
       data: tickets
     })
   } catch (error) {

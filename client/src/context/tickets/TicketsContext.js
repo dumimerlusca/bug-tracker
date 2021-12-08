@@ -25,29 +25,33 @@ const TicketsProvider = ({ children }) => {
     tickets: null,
     loading: false,
     currentTicket: null,
+    currentPage: 1,
+    totalPages: null,
     myTickets: null,
+    myTicketsCurrentPage: 1,
+    myTIcketsTotalPages: null,
     alert: null
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
   // Get all tickets
-  const getTickets = async () => {
+  const getTickets = async (query) => {
     setLoading(true)
     try {
-      const res = await axios.get('/tickets')
-      dispatch({ type: GET_TICKETS_SUCCESS, payload: res.data.data })
+      const res = await axios.get(`/tickets${query ? query : ""}`)
+      dispatch({ type: GET_TICKETS_SUCCESS, payload: res.data })
     } catch (error) {
       dispatch({ type: GET_TICKETS_FAIL, payload: error.response.data.error })
     }
   }
 
   // Get my tickets
-  const getMyTickets = async (userId) => {
+  const getMyTickets = async (userId, query) => {
     setLoading(true)
     try {
-      const res = await axios.get(`/tickets?user=${userId}`)
-      dispatch({ type: GET_MY_TICKETS_SUCCESS, payload: res.data.data })
+      const res = await axios.get(`/tickets?user=${userId}${query ? query : ""}`)
+      dispatch({ type: GET_MY_TICKETS_SUCCESS, payload: res.data })
     } catch (error) {
       dispatch({ type: GET_MY_TICKETS_FAIL })
     }

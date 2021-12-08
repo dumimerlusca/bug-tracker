@@ -12,6 +12,7 @@ import ManageRoles from './pages/ManageRoles';
 import AdminOnly from './components/routing/AdminOnly';
 import Home from './pages/Home';
 import DashboardHome from './components/DashboardHome';
+import UserProfile from './pages/UserProfile';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="projects/*" element={<Projects />} />
           <Route path="manageRoles/*" element={<AdminOnly> <ManageRoles /> </AdminOnly>} />
           <Route path="tickets/*" element={<Tickets />} />
+          <Route path="userProfile" element={<UserProfile />} />
         </Route>
       </Routes>
     </Router>

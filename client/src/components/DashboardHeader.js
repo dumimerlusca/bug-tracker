@@ -2,6 +2,7 @@ import React from 'react';
 import useAuthContext from '../context/auth/AuthContext';
 import { FaUserCog, FaBars } from 'react-icons/fa';
 import useUiContext from '../context/ui/UiContext';
+import { Link } from 'react-router-dom';
 
 
 const DashboardHeader = () => {
@@ -17,14 +18,14 @@ const DashboardHeader = () => {
   }
 
   return (
-    <header className="bg-primary-400 py-3 text-white shadow-md font-thin">
+    <header className="bg-primary-700 py-3 text-white shadow-md">
       <div className="container">
         <div className="flex justify-between">
-          <h3>Loggend is as: {user.role}<span className="font-semibold"></span></h3>
+          <h3>Loggend is as: <span className="font-semibold">{user.role}</span></h3>
           <div className="flex gap-5 items-center">
             <nav>
               <ul className="flex">
-                <li><button>User actions <FaUserCog /></button></li>
+                <li><Link to="/dashboard/userProfile"><FaUserCog className="text-2xl" /></Link></li>
               </ul>
             </nav>
             <button className="side_menu_toggler"

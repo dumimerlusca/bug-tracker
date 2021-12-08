@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdDashboardCustomize } from 'react-icons/md';
 import { FaProjectDiagram, FaUserCog, FaUsers } from 'react-icons/fa';
+import { IoBug } from 'react-icons/io5'
 import { AiOutlineProject } from 'react-icons/ai';
 import { GiTicket } from 'react-icons/gi';
 import Logout from './auth/Logout';
@@ -20,8 +21,11 @@ const SideMenu = () => {
   }, [])
 
   return (
-    <div className={`side_menu bg-primary-400 shadow-xl text-white ${isSideMenuVisible ? 'active' : null}`}>
-      <div className="top_message w-full shadow-xl">
+    <div className={`side_menu bg-primary-500 shadow-xl text-white ${isSideMenuVisible ? 'active' : null}`}>
+      <div className="top_message w-full shadow-xl py-5 px-3 flex items-center justify-center">
+        <span>
+          <IoBug className="text-7xl text-primary-900" />
+        </span>
         <h1 className="text-3xl text-center font-semibold py-5">
           Welcome  {user.name}!
         </h1>
@@ -83,16 +87,8 @@ const SideMenu = () => {
             </Link>
           </li>
           <li>
-            <Link to="/dashboard/profile"
-              className="side_menu_link"
-              onClick={hideSideMenu}>
-              <FaUserCog />
-              <span className="">
-                User profile
-              </span>
-            </Link>
+            <Logout />
           </li>
-          <li><Logout /></li>
         </ul>
       </nav>
     </div>

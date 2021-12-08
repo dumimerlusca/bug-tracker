@@ -1,28 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useCommentsContext from '../../context/comments/commentsContext';
 import { useParams } from 'react-router';
 import useAlertContext from '../../context/alert/AlertContext';
 
 
-const AddCommentForm = ({ setIsFormVisible }) => {
+const AddCommentForm = ({ setIsFormVisible, setEdit, edit, currentComment }) => {
   const {
     addComment,
-    getComments
+    getComments,
+    updateComment
   } = useCommentsContext();
   const [comment, setComment] = useState('')
 
-  const { title, body } = comment;
+  const { body } = comment;
   const { setAlert } = useAlertContext();
 
   const { id: ticketId } = useParams();
+
+  useEffect(() => {
+    if (edit && currentComment) {
+      setComment({ ...comment, body: currentComment.body });
+    }
+  }, [edit])
 
   const handleOnChange = (e) => {
     setComment(e.target.value)
   }
 
-  const AddCommentAndFetchData = async () => {
+  const handleAddComment = async () => {
     await addComment(ticketId, { body: comment });
     getComments(ticketId)
+  }
+
+  const handleUpdateComment = async () => {
+    await updateComment(currentComment._id, { body: comment });
+    getComments(ticketId);
   }
 
   const handleSubmit = (e) => {
@@ -30,8 +42,15 @@ const AddCommentForm = ({ setIsFormVisible }) => {
     if (comment.trim() === '') {
       return setAlert({ message: "Please add comment", type: 'danger' })
     }
-    AddCommentAndFetchData();
-    setIsFormVisible(false)
+
+    if (edit) {
+      handleUpdateComment()
+      setIsFormVisible(false)
+      setEdit(false)
+    } else {
+      handleAddComment();
+      setIsFormVisible(false)
+    }
   }
 
   return (
@@ -49,10 +68,13 @@ const AddCommentForm = ({ setIsFormVisible }) => {
           onChange={(e) => { handleOnChange(e) }}
           rows="5"></textarea>
       </div>
-      <input className="w-full py-2 text-center mt-3 hover:opacity-75 transition-all bg-secondary-700 text-white"
-        type="submit"
-        value="Send"
-      />
+      {edit ? (
+        <button className="w-full py-2 text-center mt-3 hover:opacity-75 transition-all bg-green-300 text-white"
+          type="submit">Update</button>
+      ) : (
+        <button className="w-full py-2 text-center mt-3 hover:opacity-75 transition-all bg-secondary-700 text-white"
+          type="submit">Send</button>
+      )}
     </form>
   )
 }

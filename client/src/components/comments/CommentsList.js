@@ -4,6 +4,7 @@ import Comment from '../comments/Comment';
 import AddCommentForm from './AddCommentForm';
 import useAlertContext from '../../context/alert/AlertContext';
 import Alert from '../Alert';
+import useTicketsContext from '../../context/tickets/TicketsContext';
 
 const CommentsList = () => {
   const {
@@ -14,9 +15,11 @@ const CommentsList = () => {
     updateComment,
     clearAlerts
   } = useCommentsContext();
+  const { currentTicket } = useTicketsContext();
   const { setAlert } = useAlertContext();
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [currentComment, setCurrentComent] = useState(null);
 
 
   useEffect(() => {
@@ -29,20 +32,22 @@ const CommentsList = () => {
   const handleClick = () => {
     if (isFormVisible) {
       setIsFormVisible(false)
+      setEdit(false)
     } else {
       setIsFormVisible(true)
     }
   }
 
-  const handleEdit = () => {
+  const handleEdit = (comment) => {
     setIsFormVisible(true)
-    console.log('handle edit')
+    setEdit(true)
+    setCurrentComent(comment)
   }
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure?')) {
       await deleteComment(id)
-      getComments(id)
+      getComments(currentTicket._id)
     }
   }
 
@@ -57,7 +62,11 @@ const CommentsList = () => {
       <div className="mt-5">
         <div className="my-5">
           {isFormVisible && (
-            <AddCommentForm setIsFormVisible={setIsFormVisible} />
+            <AddCommentForm
+              currentComment={currentComment}
+              edit={edit}
+              setEdit={setEdit}
+              setIsFormVisible={setIsFormVisible} />
           )}
         </div>
         <div>

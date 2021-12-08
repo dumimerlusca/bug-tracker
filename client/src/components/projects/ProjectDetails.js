@@ -27,9 +27,7 @@ const ProjectDetails = () => {
           <div className="p-5 rounded-md">
             <h2 className="text-xl">Tickets for this project</h2>
           </div>
-          <div className="overflow-x-auto shadow-2xl">
-            <TicketsTable tickets={tickets} showProject={false} />
-          </div>
+          <TicketsTable tickets={tickets} showProject={false} />
         </div>
       </div>
     </div>

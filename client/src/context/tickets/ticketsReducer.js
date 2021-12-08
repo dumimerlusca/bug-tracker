@@ -20,7 +20,9 @@ const reducer = (state, action) => {
     case GET_TICKETS_SUCCESS: {
       return {
         ...state,
-        tickets: action.payload,
+        tickets: action.payload.data,
+        currentPage: action.payload.page,
+        totalPages: action.payload.totalPages,
         loading: false,
         alert: null
       }
@@ -30,6 +32,8 @@ const reducer = (state, action) => {
         ...state,
         tickets: null,
         loading: false,
+        currentPage: 1,
+        totalPages: null,
         alert: action.payload
       }
     }
@@ -53,7 +57,9 @@ const reducer = (state, action) => {
     case GET_MY_TICKETS_SUCCESS: {
       return {
         ...state,
-        myTickets: action.payload,
+        myTickets: action.payload.data,
+        myTicketsCurrentPage: action.payload.page,
+        myTicketsTotalPages: action.payload.totalPages,
         loading: false,
         alert: null
       }
@@ -63,6 +69,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         myTickets: null,
+        myTicketsCurrentpage: 1,
+        myTicketsTotalPages: null,
         loading: false,
         alert: null
       }
