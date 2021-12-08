@@ -8,7 +8,8 @@ import {
   REFRESH_TOKEN,
   AUTH_ERROR,
   USER_LOADED,
-  SET_LOADING
+  SET_LOADING,
+  RESET_STATE
 } from '../types';
 
 const reducer = (state, action) => {
@@ -95,6 +96,17 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: action.payload
+      }
+    }
+
+    case RESET_STATE: {
+      return {
+        ...state,
+        isAuthenticated: null,
+        accessToken: null,
+        alert: null,
+        loading: true,
+        user: null
       }
     }
 

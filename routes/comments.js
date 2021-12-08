@@ -1,6 +1,7 @@
 const express = require('express');
 const {
-  protect
+  protect,
+  authorize
 } = require('../middleware/auth')
 const {
   getComments,
@@ -14,7 +15,7 @@ const router = express.Router({ mergeParams: true });
 
 router.route('/')
   .get(protect, getComments)
-  .post(protect, addComment)
+  .post(protect, authorize(['admin', 'project-manager', 'developer', 'submitter']), addComment)
 
 router.route('/:id')
   .put(protect, updateComment)

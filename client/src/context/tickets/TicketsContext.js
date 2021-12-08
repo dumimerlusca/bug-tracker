@@ -15,7 +15,8 @@ import {
   UPDATE_TICKET_SUCCESS,
   UPDATE_TICKET_FAIL,
   DELETE_TICKET_SUCCESS,
-  DELETE_TICKET_FAIL
+  DELETE_TICKET_FAIL,
+  RESET_STATE
 } from '../types'
 
 const TicketsContext = createContext();
@@ -121,6 +122,11 @@ const TicketsProvider = ({ children }) => {
     dispatch({ type: SET_LOADING, payload: bool })
   }
 
+  // Reset state
+  const resetState = () => {
+    dispatch({ type: RESET_STATE })
+  }
+
 
 
   return <TicketsContext.Provider value={{
@@ -131,7 +137,8 @@ const TicketsProvider = ({ children }) => {
     getMyTickets,
     getTicket,
     updateTicket,
-    deleteTicket
+    deleteTicket,
+    resetState
   }}>
     {children}
   </TicketsContext.Provider>

@@ -8,7 +8,8 @@ import {
   UPDATE_COMMENT_SUCCESS,
   UPDATE_COMMENT_FAIL,
   CLEAR_ALERTS,
-  SET_LOADING
+  SET_LOADING,
+  RESET_STATE
 } from '../types'
 
 const reducer = (state, action) => {
@@ -73,6 +74,15 @@ const reducer = (state, action) => {
       return {
         ...state,
         alert: null
+      }
+    }
+
+    case RESET_STATE: {
+      return {
+        ...state,
+        comments: [],
+        alert: null,
+        loading: false
       }
     }
 

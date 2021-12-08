@@ -13,7 +13,8 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   REFRESH_TOKEN,
-  SET_LOADING
+  SET_LOADING,
+  RESET_STATE
 } from '../types';
 
 const AuthContext = createContext();
@@ -94,13 +95,7 @@ const AuthProvider = ({ children }) => {
       const res = await axios.post('/auth/me');
       dispatch({ type: USER_LOADED, payload: res.data.data })
     } catch (error) {
-      if (error.response.status === 401) {
-        // Make requst to get a new access token (if refresh token is valid)
-        checkRefreshToken()
-      } else {
-        dispatch({ type: AUTH_ERROR, payload: error.message })
-      }
-
+      dispatch({ type: AUTH_ERROR, payload: error.message })
     }
   }
 
@@ -128,6 +123,11 @@ const AuthProvider = ({ children }) => {
     dispatch({ type: CLEAR_ALERTS })
   }
 
+  // Reset state
+  const resetState = () => {
+    dispatch({ type: RESET_STATE })
+  }
+
   return (<AuthContext.Provider value={{
     ...state,
     register,
@@ -135,7 +135,8 @@ const AuthProvider = ({ children }) => {
     logout,
     loadUser,
     clearAlerts,
-    checkRefreshToken
+    checkRefreshToken,
+    resetState
   }}>
     {children}
   </AuthContext.Provider>)

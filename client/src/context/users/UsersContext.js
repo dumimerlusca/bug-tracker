@@ -8,7 +8,8 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAIL,
   SET_LOADING,
-  CLEAR_ALERTS
+  CLEAR_ALERTS,
+  RESET_STATE
 } from '../types'
 
 const UsersContext = createContext();
@@ -57,6 +58,11 @@ const UsersProvider = ({ children }) => {
     dispatch({ type: CLEAR_ALERTS })
   }
 
+  // Reset state
+  const resetState = () => {
+    dispatch({ type: RESET_STATE })
+  }
+
   //SET LOADING
   const setLoading = (bool) => {
     dispatch({ type: SET_LOADING, payload: bool })
@@ -66,7 +72,8 @@ const UsersProvider = ({ children }) => {
     ...state,
     getUsers,
     updateUser,
-    clearAlerts
+    clearAlerts,
+    resetState
   }}>
     {children}
   </UsersContext.Provider>

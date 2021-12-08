@@ -18,7 +18,7 @@ const DashboardHeader = () => {
   }
 
   return (
-    <header className="bg-primary-700 py-3 text-white shadow-md">
+    <header className="bg-primary-700 py-3 sticky z-10 top-0 text-white shadow-md">
       <div className="container">
         <div className="flex justify-between">
           <h3>Loggend is as: <span className="font-semibold">{user.role}</span></h3>

@@ -45,6 +45,15 @@ const Login = () => {
     login(user)
   }
 
+  const loginAsDemoAdmin = () => {
+    const user = {
+      email: 'adminDemo@gmail.com',
+      password: '123456'
+    }
+    console.log('Login')
+    login(user)
+  }
+
 
   return (
     <form onSubmit={(e) => { onSubmit(e) }} className="form">
@@ -68,6 +77,16 @@ const Login = () => {
           value={password}
           className="form_input"
           type="password" />
+      </div>
+      <div>
+        <h3>Login as demo
+          <button className="my-3 ml-3 text-blue-600 font-bold
+          hover:opacity-75 transition-opacity"
+            onClick={loginAsDemoAdmin}
+            type="button">
+            admin
+          </button>
+        </h3>
       </div>
       <input type="submit" className="mt-5 py-1 text-center w-full hover:opacity-75 bg-gray-900 text-white" />
     </form>

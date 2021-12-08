@@ -81,17 +81,17 @@ const SingleProject = () => {
       </div>
 
       <div className="flex gap-3 mt-2">
-        {(user.role === 'admin' || user.role === 'project manager') && (
+        {(user.role === 'admin' || user.role === 'project manager' || user.role === 'adminDemo') && (
           <button className="py-2 px-7 bg-green-600 text-white"
             onClick={handleEditProject}
           >Edit</button>
         )}
-        {user.role === 'admin' && (
+        {(user.role === 'admin' || user.role === 'adminDemo') && (
           <button className="py-2 px-7 bg-red-600 text-white"
             onClick={handleDeleteProject}
           >Delete</button>
         )}
-        {(user.role === 'admin' || user.role === 'project manager') && (
+        {(user.role === 'admin' || user.role === 'project manager' || user.role === 'adminDemo') && (
           <Link to={`/dashboard/projects/${_id}/manageUsers`} className="py-2 px-7 bg-blue-500 text-white"
           >Manage users</Link>
         )}

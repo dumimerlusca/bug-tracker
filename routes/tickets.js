@@ -17,7 +17,7 @@ router.use('/:id/comments', commentsRouter)
 
 router.route('/')
   .get(protect, getTickets)
-  .post(protect, addTicket)
+  .post(protect, authorize(['developer', 'admin', 'project manager', 'submitter']), addTicket)
 
 router.route('/:id')
   .get(getTicket)

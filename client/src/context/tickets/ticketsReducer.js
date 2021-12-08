@@ -12,7 +12,8 @@ import {
   UPDATE_TICKET_SUCCESS,
   UPDATE_TICKET_FAIL,
   DELETE_TICKET_FAIL,
-  DELETE_TICKET_SUCCESS
+  DELETE_TICKET_SUCCESS,
+  RESET_STATE
 } from '../types'
 
 const reducer = (state, action) => {
@@ -134,6 +135,21 @@ const reducer = (state, action) => {
     case CLEAR_ALERTS: {
       return {
         ...state,
+        alert: null
+      }
+    }
+
+    case RESET_STATE: {
+      return {
+        ...state,
+        tickets: null,
+        loading: false,
+        currentTicket: null,
+        currentPage: 1,
+        totalPages: null,
+        myTickets: null,
+        myTicketsCurrentPage: 1,
+        myTIcketsTotalPages: null,
         alert: null
       }
     }

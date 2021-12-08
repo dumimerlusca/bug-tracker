@@ -11,7 +11,8 @@ import {
   UPDATE_COMMENT_SUCCESS,
   UPDATE_COMMENT_FAIL,
   CLEAR_ALERTS,
-  SET_LOADING
+  SET_LOADING,
+  RESET_STATE
 } from '../types'
 
 const CommentsContext = createContext();
@@ -86,6 +87,11 @@ const CommentsProvider = ({ children }) => {
     dispatch({ type: SET_LOADING, payload: bool })
   }
 
+  // Reset state
+  const resetState = () => {
+    dispatch({ type: RESET_STATE })
+  }
+
 
 
   return <CommentsContext.Provider value={{
@@ -94,7 +100,8 @@ const CommentsProvider = ({ children }) => {
     addComment,
     deleteComment,
     updateComment,
-    clearAlerts
+    clearAlerts,
+    resetState
   }}>
     {children}
   </CommentsContext.Provider>

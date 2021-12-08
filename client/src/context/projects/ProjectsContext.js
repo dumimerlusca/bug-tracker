@@ -117,7 +117,7 @@ const ProjectsProvider = ({ children }) => {
   }
 
   // Reset state on logout
-  const resetProjectState = () => {
+  const resetState = () => {
     dispatch({ type: RESET_STATE })
   }
 
@@ -127,7 +127,7 @@ const ProjectsProvider = ({ children }) => {
     getProjects,
     getProject,
     getMyProjects,
-    resetProjectState,
+    resetState,
     createProject,
     clearAlerts,
     deleteProject,

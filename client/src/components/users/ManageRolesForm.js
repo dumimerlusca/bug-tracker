@@ -88,6 +88,9 @@ const ManageRolesForm = () => {
           <option value="developer">Developer</option>
           <option value="project manager">Project manager</option>
           <option value="admin">Admin</option>
+          <option value="adminDemo">Admin Demo</option>
+          <option value="submitterDemo">Dubmitter Demo</option>
+          <option value="developerDemo">Developer Demo</option>
         </select>
       </div>
       <input type="submit" className="py-2 px-10 bg-secondary-500 text-white hover:opacity-75 mx-auto block mt-5 text-center" />

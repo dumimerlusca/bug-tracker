@@ -137,7 +137,7 @@ exports.logout = async (req, res, next) => {
   }
 
   // Remove token from cookies
-
+  res.cookie('refreshToken', { expires: Date.now() })
 
   // Find and remove the token from the active tokens database
   try {
@@ -146,6 +146,7 @@ exports.logout = async (req, res, next) => {
   } catch (error) {
     res.status(200).json({ success: true, msg: "Logout, no token" })
   }
+
 }
 
 // @desc   Get current logged in user

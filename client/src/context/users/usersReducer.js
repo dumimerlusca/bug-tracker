@@ -5,6 +5,7 @@ import {
   UPDATE_USER_FAIL,
   SET_LOADING,
   CLEAR_ALERTS,
+  RESET_STATE,
 } from '../types'
 
 const reducer = (state, action) => {
@@ -54,6 +55,16 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: action.payload
+      }
+    }
+
+    case RESET_STATE: {
+      return {
+        ...state,
+        users: null,
+        selectedUser: null,
+        loading: false,
+        alert: null
       }
     }
 

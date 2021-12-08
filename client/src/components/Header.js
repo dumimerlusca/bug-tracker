@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Logout from './auth/Logout';
 
 const Header = () => {
 
   return (
-    <header className="login_header py-2 bg-gray-800 text-white">
+    <header className="login_header py-2 bg-primary-700 text-white">
       <div className="container">
         <div className="flex justify-between">
           <h1>BugTracker</h1>
@@ -14,7 +13,6 @@ const Header = () => {
               <ul className="flex gap-3">
                 <li><Link to="/login">Login</Link></li>
                 <li><Link to="/register">Register</Link></li>
-                <Logout />
               </ul>
             </nav>
           </div>

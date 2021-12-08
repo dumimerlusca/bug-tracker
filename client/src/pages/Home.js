@@ -10,6 +10,8 @@ const Home = () => {
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard')
+    } else {
+      navigate('/login')
     }
     // eslint-disable-next-line
   }, [isAuthenticated])

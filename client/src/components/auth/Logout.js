@@ -1,18 +1,27 @@
 import React from 'react';
-import useAuthContext from '../../context/auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import useAuthContext from '../../context/auth/AuthContext';
 import useProjectsContext from '../../context/projects/ProjectsContext';
+import useTicketsContext from '../../context/tickets/TicketsContext';
+import useCommentsContext from '../../context/comments/commentsContext';
+
 
 
 const Logout = () => {
   const { logout } = useAuthContext();
-  const { resetProjectState } = useProjectsContext();
+  const authContext = useAuthContext();
+  const projectsContext = useProjectsContext();
+  const ticketsContext = useTicketsContext();
+  const commentsContext = useCommentsContext();
   const navigate = useNavigate();
 
-  const onClick = () => {
+  const onClick = async () => {
+    authContext.resetState();
+    projectsContext.resetState();
+    ticketsContext.resetState();
+    commentsContext.resetState();
+    await logout();
     navigate('/login');
-    resetProjectState();
-    logout();
   }
 
   return (

@@ -21,7 +21,7 @@ const SideMenu = () => {
   }, [])
 
   return (
-    <div className={`side_menu bg-primary-500 shadow-xl text-white ${isSideMenuVisible ? 'active' : null}`}>
+    <div className={`side_menu bg-primary-500 shadow-xl z-20 text-white ${isSideMenuVisible ? 'active' : null}`}>
       <div className="top_message w-full shadow-xl py-5 px-3 flex items-center justify-center">
         <span>
           <IoBug className="text-7xl text-primary-900" />
@@ -42,7 +42,7 @@ const SideMenu = () => {
               </span>
             </Link>
           </li>
-          {user.role === 'admin' &&
+          {(user.role === 'admin' || user.role === 'adminDemo') &&
             <>
               <li>
                 <Link to="/dashboard/manageRoles"

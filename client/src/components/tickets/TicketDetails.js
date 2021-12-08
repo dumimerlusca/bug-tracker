@@ -65,7 +65,7 @@ const TicketDetails = () => {
 
   } = currentTicket;
 
-  const rolesThatCanEdit = ['admin', 'project manager'];
+  const rolesThatCanEdit = ['admin', 'project manager', 'adminDemo'];
   const canEdit = (rolesThatCanEdit.includes(user.role) || submitter._id === user._id || developer._id === user._id) ? true : false;
   const canDelete = (rolesThatCanEdit.includes(user.role) || submitter._id === user.id) ? true : false;
 
@@ -100,8 +100,8 @@ const TicketDetails = () => {
         <div className="w-full">
           {edit ? <EditTicketForm ticket={currentTicket} /> : (
             <div className="flex flex-col gap-10 md:gap-0 md:flex-row justify-between items-start">
-              <div className="grid grid-cols-1 gap-5 shadow-xl rounded-md p-10
-          sm:grid-cols-2 bg-white" style={{ flex: "2" }}>
+              <div className="w-full grid grid-cols-1 gap-5 shadow-xl rounded-md p-10 sm:grid-cols-2 bg-white"
+                style={{ flex: "2" }}>
                 <div>
                   <h2 className="text-xl font-semibold">Title</h2>
                   <p className="font-thin">{name}</p>
