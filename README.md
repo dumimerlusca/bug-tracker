@@ -2,7 +2,7 @@
 Issues tracker for ongoing projects</br>
 Check live project https://focused-minsky-858c37.netlify.app/dashboard
 
-![alt text](https://i.ibb.co/VNKjBW0/bug-Tracker1.png)
+![alt text](https://i.ibb.co/6NgqpXW/issue-Tracker1.jpg)
 
 Issues tracker created using React on frontent, Node and Express on backend, and Mongo DB database.
 
